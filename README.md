@@ -2,11 +2,15 @@
 
 Public guides and official Excise portal links for Pakistan.
 
-## Deploy (Cloudflare)
+## Deploy (Cloudflare Pages)
 
-- Framework: None
-- Build command: empty
-- Assets: `.` via `wrangler.jsonc`
+1. Open [Cloudflare Dashboard → Workers & Pages](https://dash.cloudflare.com/) → **Create** → **Pages** → **Connect to Git**
+2. Select repo: `digitalprint077-lang/vehicle-hub-pk`
+3. Build settings:
+   - Framework preset: **None**
+   - Build command: *(leave empty)*
+   - Build output directory: `/`
+4. Deploy → attach your custom domain under **Custom domains**
 
 ## Related
 
