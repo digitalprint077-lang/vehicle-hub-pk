@@ -277,6 +277,7 @@
       '.category-card',
       '.service-card',
       '.district-card',
+      '.licence-row',
       '.cta-box',
       '.side-panel',
       '.article > h2',
