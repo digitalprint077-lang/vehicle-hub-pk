@@ -17,6 +17,14 @@
     return '';
   }
 
+  function hidePreloader(el, reduce) {
+    if (!el || el.classList.contains('is-done')) return;
+    el.classList.add('is-done');
+    setTimeout(function () {
+      if (el && el.parentNode) el.parentNode.removeChild(el);
+    }, reduce ? 0 : 800);
+  }
+
   function bootLoader() {
     if (!document.body) return;
     var reduce =
@@ -50,21 +58,19 @@
       existing = d;
     }
     function hide() {
-      if (!existing || existing.classList.contains('is-done')) return;
-      existing.classList.add('is-done');
-      setTimeout(function () {
-        if (existing && existing.parentNode) existing.parentNode.removeChild(existing);
-      }, reduce ? 0 : 800);
+      hidePreloader(existing, reduce);
     }
-    var wait = reduce ? 0 : 650;
-    if (document.readyState === 'complete') {
+    // Do not wait on window "load" (fonts/ads/remote images can delay forever).
+    // Hide after first paint once DOM is ready, with a hard cap.
+    var wait = reduce ? 0 : 450;
+    if (document.readyState === 'complete' || document.readyState === 'interactive') {
       setTimeout(hide, wait);
     } else {
-      window.addEventListener('load', function () {
+      document.addEventListener('DOMContentLoaded', function () {
         setTimeout(hide, wait);
       });
     }
-    setTimeout(hide, 3500);
+    setTimeout(hide, reduce ? 200 : 1800);
   }
 
   if (document.body) bootLoader();
@@ -270,7 +276,27 @@
     }
   }
 
+  var leaveFailSafeTimer = null;
+
+  function restorePageVisibility() {
+    if (!document.body) return;
+    document.body.classList.remove('page-leaving');
+    document.body.classList.add('page-ready');
+    if (leaveFailSafeTimer) {
+      clearTimeout(leaveFailSafeTimer);
+      leaveFailSafeTimer = null;
+    }
+  }
+
   function bindPageTransitions() {
+    // Back/forward bfcache restores the old DOM with page-leaving still applied,
+    // which left a blank mint page under the sticky header. Always clear it.
+    window.addEventListener('pageshow', function () {
+      restorePageVisibility();
+      var stuck = document.getElementById('pei-preloader');
+      if (stuck) hidePreloader(stuck, prefersReducedMotion());
+    });
+
     if (prefersReducedMotion()) {
       document.body.classList.add('page-ready');
       return;
@@ -288,8 +314,6 @@
 
       e.preventDefault();
       var href = a.href;
-      document.body.classList.add('page-leaving');
-      document.body.classList.remove('page-ready');
 
       var toggle = document.getElementById('nav-toggle');
       var mobile = document.getElementById('mobile-nav');
@@ -298,9 +322,20 @@
         if (toggle) toggle.setAttribute('aria-expanded', 'false');
       }
 
+      // Full-viewport leave veil (covers header too) so slow mobile loads never
+      // look like a hung blank body under the nav.
+      document.body.classList.add('page-leaving');
+      document.body.classList.remove('page-ready');
+
+      if (leaveFailSafeTimer) clearTimeout(leaveFailSafeTimer);
+      leaveFailSafeTimer = setTimeout(function () {
+        // Navigation stalled (offline, cancelled, blocked) — restore content.
+        restorePageVisibility();
+      }, 2500);
+
       window.setTimeout(function () {
         window.location.href = href;
-      }, 220);
+      }, 160);
     });
   }
 
@@ -387,6 +422,13 @@
         revealObserver.observe(el);
       }
     });
+
+    // Failsafe: never leave cards permanently invisible if IO never fires.
+    setTimeout(function () {
+      nodes.forEach(function (el) {
+        if (!el.classList.contains('is-in')) el.classList.add('is-in');
+      });
+    }, 4000);
   }
 
   window.PEI = window.PEI || {};
