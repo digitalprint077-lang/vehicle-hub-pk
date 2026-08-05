@@ -131,6 +131,11 @@
 
   function markActiveNav() {
     var current = normalizePath(window.location.pathname);
+    var isHome = current === '/' || /\/index\.html$/i.test(window.location.pathname);
+    var isServicesSection =
+      /\/guides\//i.test(window.location.pathname) &&
+      !/how-it-works\.html$/i.test(window.location.pathname);
+
     document
       .querySelectorAll('.nav-desktop a, .mobile-nav a')
       .forEach(function (a) {
@@ -139,12 +144,22 @@
           return;
         }
         var linkPath;
+        var label = (a.textContent || '').replace(/\s+/g, ' ').trim().toLowerCase();
         try {
           linkPath = normalizePath(new URL(a.href, window.location.href).pathname);
         } catch (e) {
           return;
         }
-        var active = current === linkPath;
+
+        var active = false;
+        if (label === 'home') {
+          active = isHome;
+        } else if (label === 'services') {
+          active = current === linkPath || isServicesSection;
+        } else {
+          active = current === linkPath;
+        }
+
         if (active) {
           a.classList.add('is-active');
           a.setAttribute('aria-current', 'page');
