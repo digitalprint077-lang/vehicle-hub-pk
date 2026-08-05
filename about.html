@@ -28,9 +28,41 @@
   <header class="site-header">
     <div class="site-header-inner">
       <a class="brand-link" href="./"><img class="brand-mark" src="assets/logo.svg" width="36" height="36" alt="Vehicle Hub PK"><span>Vehicle Hub PK</span></a>
-            <nav class="nav-desktop">
+                  <nav class="nav-desktop">
         <a href="./">Home</a>
-        <a href="guides/provinces.html">Services</a>
+        <div class="nav-dropdown" data-menu="excise">
+          <button type="button" class="nav-drop-btn" aria-expanded="false" aria-haspopup="true">
+            Excise services <span class="nav-drop-caret" aria-hidden="true"></span>
+          </button>
+          <div class="nav-drop-menu">
+            <div class="nav-drop-label">Provinces</div>
+            <a href="guides/provinces.html">All Excise services</a>
+            <a href="guides/punjab-excise.html">Punjab Excise</a>
+            <a href="guides/sindh-excise.html">Sindh Excise</a>
+            <a href="guides/kpk-excise.html">KPK Excise</a>
+            <a href="guides/islamabad-excise.html">Islamabad Excise</a>
+            <a href="guides/balochistan-excise.html">Balochistan Excise</a>
+            <a href="guides/gilgit-excise.html">Gilgit Excise</a>
+            <div class="nav-drop-label">Guides</div>
+            <a href="guides/vehicle-verification.html">Vehicle verification</a>
+            <a href="guides/token-tax.html">Token tax</a>
+            <a href="guides/smart-card.html">Smart card</a>
+            <a href="guides/e-challan.html">E-Challan</a>
+          </div>
+        </div>
+        <div class="nav-dropdown" data-menu="licence">
+          <button type="button" class="nav-drop-btn" aria-expanded="false" aria-haspopup="true">
+            Driving licence <span class="nav-drop-caret" aria-hidden="true"></span>
+          </button>
+          <div class="nav-drop-menu">
+            <a href="guides/driving-licence.html">All licence portals</a>
+            <a href="guides/driving-licence.html#punjab">Punjab DLIMS</a>
+            <a href="guides/driving-licence.html#sindh">Sindh DLS</a>
+            <a href="guides/driving-licence.html#islamabad">Islamabad ITP</a>
+            <a href="guides/driving-licence.html#kpk">KPK Dastak</a>
+            <a href="guides/driving-licence.html#balochistan">Balochistan QTP</a>
+          </div>
+        </div>
         <a href="how-it-works.html">How it works</a>
         <a href="about.html">About us</a>
       </nav>
@@ -42,9 +74,41 @@
       <button class="nav-toggle" id="nav-toggle" type="button" aria-label="Menu" aria-expanded="false"><span></span><span></span><span></span></button>
       </div>
     </div>
-        <nav class="mobile-nav" id="mobile-nav">
+            <nav class="mobile-nav" id="mobile-nav">
       <a href="./">Home</a>
-      <a href="guides/provinces.html">Services</a>
+      <div class="nav-dropdown" data-menu="excise">
+        <button type="button" class="nav-drop-btn" aria-expanded="false" aria-haspopup="true">
+          Excise services <span class="nav-drop-caret" aria-hidden="true"></span>
+        </button>
+        <div class="nav-drop-menu">
+          <div class="nav-drop-label">Provinces</div>
+          <a href="guides/provinces.html">All Excise services</a>
+          <a href="guides/punjab-excise.html">Punjab Excise</a>
+          <a href="guides/sindh-excise.html">Sindh Excise</a>
+          <a href="guides/kpk-excise.html">KPK Excise</a>
+          <a href="guides/islamabad-excise.html">Islamabad Excise</a>
+          <a href="guides/balochistan-excise.html">Balochistan Excise</a>
+          <a href="guides/gilgit-excise.html">Gilgit Excise</a>
+          <div class="nav-drop-label">Guides</div>
+          <a href="guides/vehicle-verification.html">Vehicle verification</a>
+          <a href="guides/token-tax.html">Token tax</a>
+          <a href="guides/smart-card.html">Smart card</a>
+          <a href="guides/e-challan.html">E-Challan</a>
+        </div>
+      </div>
+      <div class="nav-dropdown" data-menu="licence">
+        <button type="button" class="nav-drop-btn" aria-expanded="false" aria-haspopup="true">
+          Driving licence <span class="nav-drop-caret" aria-hidden="true"></span>
+        </button>
+        <div class="nav-drop-menu">
+          <a href="guides/driving-licence.html">All licence portals</a>
+          <a href="guides/driving-licence.html#punjab">Punjab DLIMS</a>
+          <a href="guides/driving-licence.html#sindh">Sindh DLS</a>
+          <a href="guides/driving-licence.html#islamabad">Islamabad ITP</a>
+          <a href="guides/driving-licence.html#kpk">KPK Dastak</a>
+          <a href="guides/driving-licence.html#balochistan">Balochistan QTP</a>
+        </div>
+      </div>
       <a href="how-it-works.html">How it works</a>
       <a href="about.html">About us</a>
       <a href="contact.html">Contact</a>
@@ -97,7 +161,8 @@
           <div class="footer-col">
             <h3>Explore</h3>
             <a href="./">Home</a>
-            <a href="guides/provinces.html">Services</a>
+            <a href="guides/provinces.html">Excise services</a>
+            <a href="guides/driving-licence.html">Driving licence</a>
             <a href="how-it-works.html">How it works</a>
           </div>
           <div class="footer-col">
