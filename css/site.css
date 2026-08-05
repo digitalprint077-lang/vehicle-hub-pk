@@ -1703,16 +1703,29 @@ html[data-theme="dark"] .pei-knock-text { color: #3ecf7a; }
 }
 
 /* Page enter / leave when switching tabs & pages */
-body.page-ready > :not(#pei-preloader):not(.site-header) {
+body.page-ready > :not(#pei-preloader):not(.site-header):not(.pei-leave-veil) {
   animation: pei-page-in .42s cubic-bezier(.22, 1, .36, 1) both;
 }
 body.page-leaving {
   pointer-events: none;
 }
-body.page-leaving > :not(#pei-preloader):not(.site-header) {
+/* Full-viewport leave veil — avoids blank mint body under sticky header on slow nav */
+body.page-leaving::after {
+  content: "";
+  position: fixed;
+  inset: 0;
+  z-index: 9998;
+  background: var(--fog);
   opacity: 0;
-  transform: translateY(-8px);
-  transition: opacity .22s ease, transform .22s ease;
+  animation: pei-leave-veil .16s ease forwards;
+  pointer-events: none;
+}
+@keyframes pei-leave-veil {
+  to { opacity: 1; }
+}
+body.page-leaving > :not(#pei-preloader):not(.site-header):not(.pei-leave-veil) {
+  opacity: 0.35;
+  transition: opacity .16s ease;
 }
 
 .reveal {
@@ -1793,12 +1806,16 @@ a.btn.is-pressing {
   .home-hero-bg {
     transform: none;
   }
-  body.page-ready > :not(#pei-preloader):not(.site-header),
-  body.page-leaving > :not(#pei-preloader):not(.site-header) {
+  body.page-ready > :not(#pei-preloader):not(.site-header):not(.pei-leave-veil),
+  body.page-leaving > :not(#pei-preloader):not(.site-header):not(.pei-leave-veil) {
     animation: none !important;
     opacity: 1 !important;
     transform: none !important;
     transition: none !important;
+  }
+  body.page-leaving::after {
+    animation: none !important;
+    opacity: 0 !important;
   }
   .province-card:hover,
   .category-card:hover,
