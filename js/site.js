@@ -155,7 +155,10 @@
         }
 
         var active = false;
-        if (label === 'home') {
+        // External verify portals can be "/", which must never match Home.
+        if (linkUrl.origin !== window.location.origin) {
+          active = false;
+        } else if (label === 'home') {
           active = isHome;
         } else if (linkUrl.hash) {
           active =
@@ -224,7 +227,7 @@
 
   function bindPressFeedback() {
     var selector =
-      '.nav-desktop a, .mobile-nav a, .btn, a.btn, .service-card, .province-card, .category-card, .district-card, .side-panel a, .district-portal-link';
+      '.nav-desktop > a, .nav-drop-btn, .nav-drop-menu a, .mobile-nav > a, .mobile-nav .nav-drop-btn, .mobile-nav .nav-drop-menu a, .btn, a.btn, .service-card, .province-card, .category-card, .district-card, .side-panel a, .district-portal-link';
     document.addEventListener(
       'pointerdown',
       function (e) {
