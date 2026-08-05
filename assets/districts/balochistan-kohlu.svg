@@ -1,0 +1,6 @@
+<svg xmlns="http://www.w3.org/2000/svg" viewBox="0 0 64 64" role="img" aria-hidden="true">
+  <path fill="#0f5a62" d="M32 3c9.8 5 18.1 6.9 24.5 7.3v23.2c0 11.9-8.3 21.9-24.5 28.1C15.8 55.4 7.5 45.4 7.5 33.5V10.3C13.9 9.9 22.2 8 32 3Z"/>
+  <path fill="#0a3f45" d="M7.5 39.5 32 51l24.5-11.5V64H7.5Z"/>
+  <path fill="none" stroke="#e8b23a" stroke-width="2.2" stroke-linecap="round" d="M15.2 11.5c5.2-2.3 10.8-4.4 16.8-6.8 6 2.4 11.6 4.5 16.8 6.8"/>
+  <text x="32" y="36" text-anchor="middle" font-family="Outfit, Arial, sans-serif" font-size="15" font-weight="700" fill="#ffffff">KOH</text>
+</svg>

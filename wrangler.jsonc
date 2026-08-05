@@ -1,0 +1,12 @@
+{
+  "$schema": "node_modules/wrangler/config-schema.json",
+  "name": "vehicle-hub-pk",
+  "compatibility_date": "2026-08-04",
+  "assets": {
+    "directory": ".",
+    "not_found_handling": "404-page"
+  },
+  "observability": {
+    "enabled": true
+  }
+}

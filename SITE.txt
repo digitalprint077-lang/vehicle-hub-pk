@@ -1,0 +1,8 @@
+VEHICLE HUB PK — PUBLIC SITE
+============================
+
+Deploy this repository root to Cloudflare Pages/Workers.
+Attach your new Vehicle Hub domain as the custom domain.
+
+Login / QR permit pages are NOT in this repo.
+They remain on pdtg-transport-punjab.com (punjab-route-permit).
