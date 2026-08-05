@@ -1239,18 +1239,27 @@ html[data-theme="dark"] .home-hero .btn.ghost {
   color: var(--ink);
   transform: translateX(2px);
 }
-.licence-links a:last-child {
+.licence-links a:last-child,
+.licence-links a.licence-verify {
   color: #fff;
   background: var(--sea);
   padding: 8px 14px;
   border-radius: 10px;
 }
-.licence-links a:last-child:hover {
+.licence-links a:last-child:hover,
+.licence-links a.licence-verify:hover {
   color: #fff;
   transform: translateY(-1px);
   background: var(--sea-deep);
 }
-html[data-theme="dark"] .licence-links a:last-child {
+.licence-links a:last-child.licence-verify {
+  background: var(--sea-deep);
+}
+.licence-links a:last-child:not(.licence-verify) {
+  background: var(--sea);
+}
+html[data-theme="dark"] .licence-links a:last-child,
+html[data-theme="dark"] .licence-links a.licence-verify {
   color: #0b1518;
 }
 @media (max-width: 700px) {
