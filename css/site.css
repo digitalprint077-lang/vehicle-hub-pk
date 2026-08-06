@@ -1002,16 +1002,20 @@ html[data-theme="dark"] .home-hero {
   inset: 0;
   z-index: -1;
   background:
-    linear-gradient(120deg, rgba(241, 248, 243, 0.92) 0%, rgba(241, 248, 243, 0.55) 48%, transparent 72%),
+    linear-gradient(115deg, rgba(241, 248, 243, 0.97) 0%, rgba(232, 246, 238, 0.9) 34%, rgba(15, 36, 24, 0.55) 62%, rgba(15, 36, 24, 0.72) 100%),
+    linear-gradient(0deg, rgba(15, 36, 24, 0.28), rgba(15, 36, 24, 0.28)),
     url("https://images.unsplash.com/photo-1601584115197-04ecc0da31d7?auto=format&fit=crop&w=2000&q=80") right center / cover no-repeat;
-  opacity: 0.45;
+  opacity: 0.78;
+  filter: saturate(0.85) contrast(1.05);
   animation: pei-hero-zoom 12s ease-out both;
 }
 html[data-theme="dark"] .home-hero-bg {
   background:
-    linear-gradient(120deg, rgba(15, 22, 18, 0.92) 0%, rgba(15, 22, 18, 0.65) 48%, transparent 72%),
+    linear-gradient(115deg, rgba(15, 22, 18, 0.96) 0%, rgba(15, 22, 18, 0.88) 38%, rgba(8, 14, 11, 0.72) 68%, rgba(8, 14, 11, 0.82) 100%),
+    linear-gradient(0deg, rgba(0, 0, 0, 0.35), rgba(0, 0, 0, 0.35)),
     url("https://images.unsplash.com/photo-1601584115197-04ecc0da31d7?auto=format&fit=crop&w=2000&q=80") right center / cover no-repeat;
-  opacity: 0.35;
+  opacity: 0.7;
+  filter: saturate(0.75) contrast(1.08);
 }
 .home-hero-inner {
   width: min(1200px, calc(100% - var(--pad-x) * 2));
@@ -1020,16 +1024,13 @@ html[data-theme="dark"] .home-hero-bg {
   max-width: 720px;
 }
 .home-hero .hero-kicker {
-  display: inline-block;
-  margin: 0 0 12px;
-  padding: 6px 12px;
-  border-radius: 999px;
-  background: rgba(3, 139, 69, 0.12);
+  display: block;
+  margin: 0 0 14px;
+  padding: 0;
   color: var(--sea-deep);
-  font-size: 0.82rem;
+  font-size: 0.95rem;
   font-weight: 700;
-  letter-spacing: 0.04em;
-  text-transform: uppercase;
+  letter-spacing: 0.02em;
   animation: pei-rise .7s cubic-bezier(.22,1,.36,1) both;
 }
 .home-hero .hero-brand {
@@ -1057,9 +1058,15 @@ html[data-theme="dark"] .home-hero-bg {
 .home-hero p {
   margin: 0 0 22px;
   max-width: 48ch;
-  color: var(--muted);
+  color: var(--ink-soft);
   font-size: clamp(1rem, 2.2vw, 1.15rem);
   animation: pei-rise .75s cubic-bezier(.22,1,.36,1) .16s both;
+}
+.home-hero > .home-hero-inner > p:not(.hero-kicker):not(.hero-sub) {
+  text-shadow: 0 1px 0 rgba(241, 248, 243, 0.55);
+}
+html[data-theme="dark"] .home-hero > .home-hero-inner > p:not(.hero-kicker):not(.hero-sub) {
+  text-shadow: 0 1px 12px rgba(0, 0, 0, 0.45);
 }
 .home-hero .btn {
   display: inline-flex;
