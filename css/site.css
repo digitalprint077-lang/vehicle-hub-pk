@@ -1819,3 +1819,210 @@ a.btn.is-pressing {
     transform: none;
   }
 }
+
+/* Vehicle tools */
+.tools-grid {
+  display: grid;
+  grid-template-columns: repeat(auto-fit, minmax(240px, 1fr));
+  gap: 14px;
+  margin: 18px 0 8px;
+}
+.tool-card {
+  display: flex;
+  flex-direction: column;
+  gap: 8px;
+  padding: 18px 16px;
+  border: 1px solid var(--line);
+  border-radius: 16px;
+  background: var(--surface-soft);
+  text-decoration: none;
+  color: inherit;
+  transition: transform .2s ease, border-color .2s ease, background-color .2s ease;
+}
+a.tool-card:hover {
+  transform: translateY(-2px);
+  border-color: rgba(3, 139, 69, 0.35);
+  background: var(--surface);
+}
+.tool-card h3 {
+  margin: 0;
+  font-size: 1.05rem;
+  color: var(--ink);
+}
+.tool-card p {
+  margin: 0;
+  color: var(--muted);
+  font-size: 0.94rem;
+}
+.tool-card .tool-go {
+  margin-top: auto;
+  font-weight: 700;
+  color: var(--sea-deep);
+  font-size: 0.92rem;
+}
+.tool-form {
+  display: grid;
+  gap: 14px;
+  margin: 18px 0;
+  padding: 18px;
+  border: 1px solid var(--line);
+  border-radius: 16px;
+  background: var(--surface-soft);
+}
+.tool-form .field {
+  display: grid;
+  gap: 6px;
+}
+.tool-form label {
+  font-weight: 700;
+  font-size: 0.92rem;
+  color: var(--ink-soft);
+}
+.tool-form .hint {
+  margin: 0;
+  font-size: 0.84rem;
+  color: var(--muted);
+}
+.tool-form input,
+.tool-form select {
+  width: 100%;
+  min-height: 46px;
+  border: 1px solid var(--line);
+  border-radius: 12px;
+  padding: 0 14px;
+  font: inherit;
+  background: var(--surface);
+  color: var(--ink);
+}
+.tool-form input:focus,
+.tool-form select:focus {
+  outline: 2px solid rgba(3, 139, 69, 0.28);
+  border-color: var(--sea);
+}
+.tool-form .field-row {
+  display: grid;
+  grid-template-columns: repeat(2, minmax(0, 1fr));
+  gap: 12px;
+}
+.tool-form .actions {
+  display: flex;
+  flex-wrap: wrap;
+  gap: 8px;
+  align-items: center;
+}
+.tool-form .btn,
+.tool-result .btn,
+.reminder-item .btn {
+  display: inline-flex;
+  align-items: center;
+  justify-content: center;
+  min-height: 44px;
+  padding: 0 16px;
+  border-radius: 12px;
+  border: 0;
+  background: var(--sea);
+  color: #fff;
+  font: inherit;
+  font-weight: 700;
+  cursor: pointer;
+  text-decoration: none;
+}
+.tool-form .btn.ghost,
+.reminder-item .btn.ghost {
+  background: var(--surface);
+  color: var(--sea-deep);
+  border: 1px solid rgba(3, 139, 69, 0.28);
+}
+.tool-result,
+.tool-error {
+  margin: 0 0 18px;
+  padding: 16px 18px;
+  border-radius: 14px;
+  border: 1px solid var(--line);
+}
+.tool-result {
+  background: linear-gradient(135deg, rgba(3, 139, 69, 0.1), rgba(245, 187, 24, 0.08));
+}
+.tool-error {
+  background: rgba(180, 50, 50, 0.08);
+  border-color: rgba(180, 50, 50, 0.22);
+  color: #8a2a2a;
+}
+html[data-theme="dark"] .tool-error {
+  color: #f0b4b4;
+}
+.tool-result dl {
+  margin: 0;
+  display: grid;
+  gap: 10px;
+}
+.tool-result dt {
+  font-size: 0.82rem;
+  color: var(--muted);
+  font-weight: 600;
+}
+.tool-result dd {
+  margin: 2px 0 0;
+  font-size: 1.2rem;
+  font-weight: 800;
+  color: var(--ink);
+}
+.tool-empty {
+  margin: 0;
+  color: var(--muted);
+}
+.reminder-list {
+  display: grid;
+  gap: 10px;
+  margin: 0 0 18px;
+}
+.reminder-item {
+  display: flex;
+  gap: 12px;
+  align-items: center;
+  justify-content: space-between;
+  padding: 14px 16px;
+  border: 1px solid var(--line);
+  border-radius: 14px;
+  background: var(--surface);
+}
+.reminder-main {
+  min-width: 0;
+}
+.reminder-main strong {
+  display: block;
+  color: var(--ink);
+}
+.reminder-main p {
+  margin: 4px 0 8px;
+  color: var(--muted);
+  font-size: 0.92rem;
+}
+.tool-badge {
+  display: inline-block;
+  padding: 4px 8px;
+  border-radius: 8px;
+  font-size: 0.78rem;
+  font-weight: 700;
+}
+.tool-badge.ok {
+  background: rgba(3, 139, 69, 0.12);
+  color: var(--sea-deep);
+}
+.tool-badge.due-soon {
+  background: rgba(245, 187, 24, 0.2);
+  color: #8a6a00;
+}
+.tool-badge.overdue {
+  background: rgba(180, 50, 50, 0.12);
+  color: #8a2a2a;
+}
+html[data-theme="dark"] .tool-badge.due-soon { color: #f5bb18; }
+html[data-theme="dark"] .tool-badge.overdue { color: #f0b4b4; }
+@media (max-width: 640px) {
+  .tool-form .field-row { grid-template-columns: 1fr; }
+  .reminder-item {
+    flex-direction: column;
+    align-items: stretch;
+  }
+}

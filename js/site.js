@@ -134,6 +134,7 @@
     var isHome = current === '/' || /\/index\.html$/i.test(window.location.pathname);
     var isLicence =
       /driving-licence\.html$/i.test(window.location.pathname);
+    var isTools = /\/tools(\/|$)/i.test(window.location.pathname);
     var isExcise =
       /\/guides\//i.test(window.location.pathname) && !isLicence;
 
@@ -184,6 +185,7 @@
       if (!hasActive) {
         if (kind === 'excise' && isExcise) hasActive = true;
         if (kind === 'licence' && isLicence) hasActive = true;
+        if (kind === 'tools' && isTools) hasActive = true;
       }
       drop.classList.toggle('has-active', hasActive);
     });
@@ -227,7 +229,7 @@
 
   function bindPressFeedback() {
     var selector =
-      '.nav-desktop > a, .nav-drop-btn, .nav-drop-menu a, .mobile-nav > a, .mobile-nav .nav-drop-btn, .mobile-nav .nav-drop-menu a, .btn, a.btn, .service-card, .province-card, .category-card, .district-card, .side-panel a, .district-portal-link';
+      '.nav-desktop > a, .nav-drop-btn, .nav-drop-menu a, .mobile-nav > a, .mobile-nav .nav-drop-btn, .mobile-nav .nav-drop-menu a, .btn, a.btn, .service-card, .province-card, .category-card, .district-card, .tool-card, .side-panel a, .district-portal-link';
     document.addEventListener(
       'pointerdown',
       function (e) {
@@ -333,6 +335,7 @@
       '.category-card',
       '.service-card',
       '.district-card',
+      '.tool-card',
       '.licence-row',
       '.cta-box',
       '.side-panel',

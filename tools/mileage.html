@@ -1,0 +1,274 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+  <meta charset="UTF-8">
+  <meta name="viewport" content="width=device-width, initial-scale=1.0, viewport-fit=cover">
+  <meta name="theme-color" content="#038b45">
+  <title>Mileage calculator | Vehicle Hub PK</title>
+  <meta name="description" content="Calculate real vehicle mileage (km/L) from odometer readings and fuel filled.">
+  <link rel="preconnect" href="https://fonts.googleapis.com">
+  <link rel="preconnect" href="https://fonts.gstatic.com" crossorigin>
+  <link href="https://fonts.googleapis.com/css2?family=Outfit:wght@400;500;600;700;800&display=swap" rel="stylesheet">
+  <link rel="icon" href="../assets/favicon.svg" type="image/svg+xml">
+  <link rel="icon" href="../assets/favicon-32.png" type="image/png" sizes="32x32">
+  <link rel="apple-touch-icon" href="../assets/logo-192.png">
+  <script>
+    (function () {
+      try {
+        var t = localStorage.getItem('pei-theme');
+        document.documentElement.setAttribute('data-theme', t === 'dark' ? 'dark' : 'light');
+      } catch (e) {
+        document.documentElement.setAttribute('data-theme', 'light');
+      }
+    })();
+  </script>
+  <link rel="stylesheet" href="../css/site.css">
+</head>
+<body>
+  <header class="site-header">
+    <div class="site-header-inner">
+      <a class="brand-link" href="../"><img class="brand-mark" src="../assets/logo.svg" width="36" height="36" alt="Vehicle Hub PK"><span>Vehicle Hub PK</span></a>
+      <nav class="nav-desktop">
+        <a href="../">Home</a>
+        <div class="nav-dropdown" data-menu="excise">
+          <button type="button" class="nav-drop-btn" aria-expanded="false" aria-haspopup="true">
+            Excise services <span class="nav-drop-caret" aria-hidden="true"></span>
+          </button>
+          <div class="nav-drop-menu">
+            <div class="nav-drop-label">Provinces</div>
+            <a href="../guides/provinces.html">All Excise services</a>
+            <a href="../guides/punjab-excise.html">Punjab Excise</a>
+            <a href="../guides/sindh-excise.html">Sindh Excise</a>
+            <a href="../guides/kpk-excise.html">KPK Excise</a>
+            <a href="../guides/islamabad-excise.html">Islamabad Excise</a>
+            <a href="../guides/balochistan-excise.html">Balochistan Excise</a>
+            <a href="../guides/gilgit-excise.html">Gilgit Excise</a>
+            <div class="nav-drop-label">Guides (Punjab)</div>
+            <a href="../guides/vehicle-verification.html">Vehicle verification</a>
+            <a href="../guides/token-tax.html">Token tax</a>
+            <a href="../guides/smart-card.html">Smart card</a>
+            <a href="../guides/e-challan.html">E-Challan</a>
+            <a href="../guides/districts.html">District Excise offices</a>
+          </div>
+        </div>
+        <div class="nav-dropdown" data-menu="licence">
+          <button type="button" class="nav-drop-btn" aria-expanded="false" aria-haspopup="true">
+            Driving licence <span class="nav-drop-caret" aria-hidden="true"></span>
+          </button>
+          <div class="nav-drop-menu">
+            <a href="../guides/driving-licence.html">All licence portals</a>
+            <a href="../guides/driving-licence.html#verify">Verify a licence</a>
+            <div class="nav-drop-label">By region</div>
+            <a href="../guides/driving-licence.html#punjab">Punjab DLIMS</a>
+            <a href="https://dlims.punjab.gov.pk/verify" target="_blank" rel="noopener noreferrer">Punjab verify</a>
+            <a href="../guides/driving-licence.html#sindh">Sindh DLS</a>
+            <a href="https://dls.gos.pk/online-verification.html" target="_blank" rel="noopener noreferrer">Sindh verify</a>
+            <a href="../guides/driving-licence.html#islamabad">Islamabad ITP</a>
+            <a href="https://dlims.islamabadpolice.gov.pk/verify-license-information" target="_blank" rel="noopener noreferrer">Islamabad verify</a>
+            <a href="../guides/driving-licence.html#kpk">KPK Dastak</a>
+            <a href="https://dastakappecitizenkp.pk/" target="_blank" rel="noopener noreferrer">KPK verify</a>
+            <a href="../guides/driving-licence.html#balochistan">Balochistan QTP</a>
+            <a href="https://qtp.gob.pk/driving/verfication" target="_blank" rel="noopener noreferrer">Balochistan verify</a>
+            <a href="../guides/driving-licence.html#gilgit">Gilgit DLMIS</a>
+            <a href="https://dlmis.gbp.gov.pk/verify/" target="_blank" rel="noopener noreferrer">Gilgit verify</a>
+          </div>
+        </div>
+        <div class="nav-dropdown" data-menu="tools">
+          <button type="button" class="nav-drop-btn" aria-expanded="false" aria-haspopup="true">
+            Tools <span class="nav-drop-caret" aria-hidden="true"></span>
+          </button>
+          <div class="nav-drop-menu">
+            <a href="./">All tools</a>
+            <a href="./fuel-cost.html">Fuel cost calculator</a>
+            <a href="./maintenance-reminder.html">Maintenance reminder</a>
+            <a href="./mileage.html">Mileage calculator</a>
+            <a href="./trip-cost.html">Trip cost calculator</a>
+            <a href="./number-plate-guide.html">Number plate guide</a>
+            <a href="./engine-tax-guide.html">Engine size &amp; tax guide</a>
+          </div>
+        </div>
+        <a href="../how-it-works.html">How it works</a>
+        <a href="../about.html">About us</a>
+        <a href="../contact.html">Contact</a>
+      </nav>
+      <div class="header-actions">
+      <button class="theme-toggle" type="button" aria-label="Switch to dark mode" aria-pressed="false" title="Dark mode">
+        <svg class="icon-moon" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round" aria-hidden="true"><path d="M21 14.5A8.5 8.5 0 0 1 9.5 3 7 7 0 1 0 21 14.5z"/></svg>
+        <svg class="icon-sun" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round" aria-hidden="true"><circle cx="12" cy="12" r="4"/><path d="M12 2v2M12 20v2M4.9 4.9l1.4 1.4M17.7 17.7l1.4 1.4M2 12h2M20 12h2M4.9 19.1l1.4-1.4M17.7 6.3l1.4-1.4"/></svg>
+      </button>
+      <button class="nav-toggle" id="nav-toggle" type="button" aria-label="Menu" aria-expanded="false"><span></span><span></span><span></span></button>
+      </div>
+    </div>
+    <nav class="mobile-nav" id="mobile-nav">
+      <a href="../">Home</a>
+      <div class="nav-dropdown" data-menu="excise">
+        <button type="button" class="nav-drop-btn" aria-expanded="false" aria-haspopup="true">
+          Excise services <span class="nav-drop-caret" aria-hidden="true"></span>
+        </button>
+        <div class="nav-drop-menu">
+          <div class="nav-drop-label">Provinces</div>
+          <a href="../guides/provinces.html">All Excise services</a>
+          <a href="../guides/punjab-excise.html">Punjab Excise</a>
+          <a href="../guides/sindh-excise.html">Sindh Excise</a>
+          <a href="../guides/kpk-excise.html">KPK Excise</a>
+          <a href="../guides/islamabad-excise.html">Islamabad Excise</a>
+          <a href="../guides/balochistan-excise.html">Balochistan Excise</a>
+          <a href="../guides/gilgit-excise.html">Gilgit Excise</a>
+          <div class="nav-drop-label">Guides (Punjab)</div>
+          <a href="../guides/vehicle-verification.html">Vehicle verification</a>
+          <a href="../guides/token-tax.html">Token tax</a>
+          <a href="../guides/smart-card.html">Smart card</a>
+          <a href="../guides/e-challan.html">E-Challan</a>
+          <a href="../guides/districts.html">District Excise offices</a>
+        </div>
+      </div>
+      <div class="nav-dropdown" data-menu="licence">
+        <button type="button" class="nav-drop-btn" aria-expanded="false" aria-haspopup="true">
+          Driving licence <span class="nav-drop-caret" aria-hidden="true"></span>
+        </button>
+        <div class="nav-drop-menu">
+          <a href="../guides/driving-licence.html">All licence portals</a>
+          <a href="../guides/driving-licence.html#verify">Verify a licence</a>
+          <div class="nav-drop-label">By region</div>
+          <a href="../guides/driving-licence.html#punjab">Punjab DLIMS</a>
+          <a href="https://dlims.punjab.gov.pk/verify" target="_blank" rel="noopener noreferrer">Punjab verify</a>
+          <a href="../guides/driving-licence.html#sindh">Sindh DLS</a>
+          <a href="https://dls.gos.pk/online-verification.html" target="_blank" rel="noopener noreferrer">Sindh verify</a>
+          <a href="../guides/driving-licence.html#islamabad">Islamabad ITP</a>
+          <a href="https://dlims.islamabadpolice.gov.pk/verify-license-information" target="_blank" rel="noopener noreferrer">Islamabad verify</a>
+          <a href="../guides/driving-licence.html#kpk">KPK Dastak</a>
+          <a href="https://dastakappecitizenkp.pk/" target="_blank" rel="noopener noreferrer">KPK verify</a>
+          <a href="../guides/driving-licence.html#balochistan">Balochistan QTP</a>
+          <a href="https://qtp.gob.pk/driving/verfication" target="_blank" rel="noopener noreferrer">Balochistan verify</a>
+          <a href="../guides/driving-licence.html#gilgit">Gilgit DLMIS</a>
+          <a href="https://dlmis.gbp.gov.pk/verify/" target="_blank" rel="noopener noreferrer">Gilgit verify</a>
+        </div>
+      </div>
+      <div class="nav-dropdown" data-menu="tools">
+        <button type="button" class="nav-drop-btn" aria-expanded="false" aria-haspopup="true">
+          Tools <span class="nav-drop-caret" aria-hidden="true"></span>
+        </button>
+        <div class="nav-drop-menu">
+          <a href="./">All tools</a>
+          <a href="./fuel-cost.html">Fuel cost calculator</a>
+          <a href="./maintenance-reminder.html">Maintenance reminder</a>
+          <a href="./mileage.html">Mileage calculator</a>
+          <a href="./trip-cost.html">Trip cost calculator</a>
+          <a href="./number-plate-guide.html">Number plate guide</a>
+          <a href="./engine-tax-guide.html">Engine size &amp; tax guide</a>
+        </div>
+      </div>
+      <a href="../how-it-works.html">How it works</a>
+      <a href="../about.html">About us</a>
+      <a href="../contact.html">Contact</a>
+    </nav>
+  </header>
+
+  <div class="ad-slot ad-top" data-ad="top">Advertisement</div>
+
+  <div class="page-wrap">
+    <article class="article">
+      <p class="page-kicker">Calculator</p>
+      <h1>Mileage calculator</h1>
+      <p class="lead">Find your vehicle’s real fuel average from two odometer readings and the fuel you filled.</p>
+      <div class="ad-slot ad-inarticle" data-ad="inarticle">Advertisement</div>
+      <form class="tool-form" id="mileage-form">
+        <div class="field-row">
+          <div class="field">
+            <label for="startOdo">Start odometer (km)</label>
+            <input id="startOdo" name="startOdo" type="number" min="0" step="0.1" inputmode="decimal" required>
+          </div>
+          <div class="field">
+            <label for="endOdo">End odometer (km)</label>
+            <input id="endOdo" name="endOdo" type="number" min="0" step="0.1" inputmode="decimal" required>
+          </div>
+        </div>
+        <div class="field">
+          <label for="fuelFilled">Fuel filled (litres)</label>
+          <input id="fuelFilled" name="fuelFilled" type="number" min="0.1" step="0.01" inputmode="decimal" required placeholder="e.g. 30">
+          <p class="hint">Best after a full-to-full tank fill.</p>
+        </div>
+        <div class="actions">
+          <button class="btn" type="submit">Calculate mileage</button>
+        </div>
+      </form>
+      <p class="tool-error" id="mileage-error" hidden></p>
+      <div class="tool-result" id="mileage-result" hidden>
+        <dl>
+          <div><dt>Distance driven</dt><dd id="mileage-distance">—</dd></div>
+          <div><dt>Average</dt><dd id="mileage-kml">—</dd></div>
+          <div><dt>Consumption</dt><dd id="mileage-l100">—</dd></div>
+        </dl>
+      </div>
+      <h2>Tip</h2>
+      <p>Reset the trip meter or note the odometer at a full tank, drive normally, then refill to full and enter the litres pumped for the most accurate km/L.</p>
+    </article>
+    <aside class="sidebar">
+      <div class="ad-slot ad-sidebar" data-ad="sidebar">Advertisement</div>
+      <div class="side-panel">
+        <h3>Tools</h3>
+        <a href="./">All tools</a>
+        <a href="fuel-cost.html">Fuel cost calculator</a>
+        <a href="maintenance-reminder.html">Vehicle maintenance reminder</a>
+        <a href="mileage.html">Mileage calculator</a>
+        <a href="trip-cost.html">Trip cost calculator</a>
+        <a href="number-plate-guide.html">Number plate meaning guide</a>
+        <a href="engine-tax-guide.html">Engine size & tax guide</a>
+      </div>
+      <div class="side-panel">
+        <h3>Official checks</h3>
+        <a href="../guides/provinces.html">Excise services</a>
+        <a href="../guides/vehicle-verification.html">Vehicle verification</a>
+        <a href="../guides/token-tax.html">Token tax</a>
+        <a href="../guides/driving-licence.html">Driving licence</a>
+      </div>
+    </aside>
+  </div>
+
+  <div class="ad-slot ad-footer" data-ad="footer">Advertisement</div>
+  <footer class="site-footer">
+    <div class="site-footer-inner">
+      <div class="footer-top">
+        <div class="footer-brand">
+          <a class="footer-logo" href="../">
+            <img src="../assets/logo.svg" width="40" height="40" alt="">
+            <span>Vehicle Hub PK</span>
+          </a>
+          <p>Clear Excise guides, official portal links, and free vehicle tools for Pakistan.</p>
+        </div>
+        <div class="footer-cols">
+          <div class="footer-col">
+            <h3>Explore</h3>
+            <a href="../">Home</a>
+            <a href="./">Tools</a>
+            <a href="../guides/provinces.html">Excise services</a>
+            <a href="../guides/driving-licence.html">Driving licence</a>
+          </div>
+          <div class="footer-col">
+            <h3>Tools</h3>
+            <a href="fuel-cost.html">Fuel cost</a>
+            <a href="mileage.html">Mileage</a>
+            <a href="trip-cost.html">Trip cost</a>
+            <a href="number-plate-guide.html">Number plates</a>
+          </div>
+          <div class="footer-col">
+            <h3>Company</h3>
+            <a href="../about.html">About us</a>
+            <a href="../contact.html">Contact</a>
+            <a href="../privacy.html">Privacy</a>
+          </div>
+        </div>
+      </div>
+      <div class="footer-bottom">
+        <p>© 2026 Vehicle Hub PK. Independent guides — not a government website.</p>
+        <span class="footer-note">Official portals only</span>
+      </div>
+    </div>
+  </footer>
+
+  <script src="../js/ads-config.js"></script>
+  <script src="../js/ads-render.js"></script>
+  <script src="../js/site.js"></script>
+  <script src="../js/tools.js"></script>
+</body>
+</html>
