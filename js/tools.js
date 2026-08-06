@@ -358,6 +358,375 @@
     });
   }
 
+  var EXPENSE_KEY = 'vhpk-vehicle-expenses';
+  var DOCUMENT_KEY = 'vhpk-document-reminders';
+
+  var CATEGORY_LABELS = {
+    fuel: 'Fuel',
+    oil: 'Oil change',
+    tyres: 'Tyre replacement',
+    service: 'Service / repair',
+    other: 'Other'
+  };
+
+  var DOC_LABELS = {
+    registration: 'Registration expiry',
+    token: 'Token tax due',
+    licence: 'Driving licence expiry',
+    insurance: 'Insurance expiry',
+    other: 'Other document'
+  };
+
+  function loadJson(key) {
+    try {
+      var raw = localStorage.getItem(key);
+      var list = raw ? JSON.parse(raw) : [];
+      return Array.isArray(list) ? list : [];
+    } catch (e) {
+      return [];
+    }
+  }
+
+  function saveJson(key, list) {
+    try {
+      localStorage.setItem(key, JSON.stringify(list));
+    } catch (e) {}
+  }
+
+  function startOfMonth(d) {
+    return new Date(d.getFullYear(), d.getMonth(), 1);
+  }
+
+  function startOfYear(d) {
+    return new Date(d.getFullYear(), 0, 1);
+  }
+
+  function parseDay(iso) {
+    return new Date(iso + 'T12:00:00');
+  }
+
+  function bindExpenses() {
+    var form = document.getElementById('expense-form');
+    var listEl = document.getElementById('expense-list');
+    if (!form || !listEl) return;
+
+    var filterVehicle = document.getElementById('filterVehicle');
+    var filterCategory = document.getElementById('filterCategory');
+    var dateInput = form.elements.date;
+    if (dateInput && !dateInput.value) {
+      dateInput.value = new Date().toISOString().slice(0, 10);
+    }
+
+    function vehicles() {
+      var set = {};
+      loadJson(EXPENSE_KEY).forEach(function (item) {
+        if (item.vehicle) set[item.vehicle] = true;
+      });
+      return Object.keys(set).sort();
+    }
+
+    function fillVehicleOptions() {
+      var names = vehicles();
+      var datalist = document.getElementById('expense-vehicles');
+      if (datalist) {
+        datalist.innerHTML = names
+          .map(function (n) {
+            return '<option value="' + escapeHtml(n) + '"></option>';
+          })
+          .join('');
+      }
+      if (filterVehicle) {
+        var current = filterVehicle.value;
+        filterVehicle.innerHTML =
+          '<option value="">All vehicles</option>' +
+          names
+            .map(function (n) {
+              return (
+                '<option value="' +
+                escapeHtml(n) +
+                '"' +
+                (n === current ? ' selected' : '') +
+                '>' +
+                escapeHtml(n) +
+                '</option>'
+              );
+            })
+            .join('');
+      }
+    }
+
+    function filtered() {
+      var items = loadJson(EXPENSE_KEY);
+      var v = filterVehicle ? filterVehicle.value : '';
+      var c = filterCategory ? filterCategory.value : '';
+      return items.filter(function (item) {
+        if (v && item.vehicle !== v) return false;
+        if (c && item.category !== c) return false;
+        return true;
+      });
+    }
+
+    function renderSummary(items) {
+      var now = new Date();
+      var monthStart = startOfMonth(now);
+      var yearStart = startOfYear(now);
+      var monthTotal = 0;
+      var yearTotal = 0;
+      var odoReads = [];
+      items.forEach(function (item) {
+        var day = parseDay(item.date);
+        if (isNaN(day.getTime())) return;
+        if (day >= monthStart) monthTotal += item.amount;
+        if (day >= yearStart) yearTotal += item.amount;
+        if (item.odometer != null && isFinite(item.odometer)) {
+          odoReads.push({ odo: item.odometer, amount: item.amount, date: item.date });
+        }
+      });
+      setText('expense-month', money(monthTotal));
+      setText('expense-year', money(yearTotal));
+
+      var perKm = '—';
+      if (odoReads.length >= 2) {
+        odoReads.sort(function (a, b) {
+          return a.odo - b.odo;
+        });
+        var minO = odoReads[0].odo;
+        var maxO = odoReads[odoReads.length - 1].odo;
+        var km = maxO - minO;
+        if (km > 0) {
+          var firstDate = odoReads[0].date;
+          var lastDate = odoReads[odoReads.length - 1].date;
+          if (firstDate > lastDate) {
+            var tmp = firstDate;
+            firstDate = lastDate;
+            lastDate = tmp;
+          }
+          var rangedTotal = 0;
+          items.forEach(function (item) {
+            if (item.date >= firstDate && item.date <= lastDate) rangedTotal += item.amount;
+          });
+          perKm = money(rangedTotal / km) + ' / km';
+        }
+      }
+      setText('expense-per-km', perKm);
+
+      var label = 'Showing all vehicles';
+      if (filterVehicle && filterVehicle.value) label = 'Showing ' + filterVehicle.value;
+      if (filterCategory && filterCategory.value) {
+        label +=
+          ' · ' + (CATEGORY_LABELS[filterCategory.value] || filterCategory.value);
+      }
+      setText('expense-filter-label', label);
+    }
+
+    function renderList() {
+      fillVehicleOptions();
+      var items = filtered().slice().sort(function (a, b) {
+        return (b.date || '').localeCompare(a.date || '');
+      });
+      renderSummary(filtered());
+
+      if (!items.length) {
+        listEl.innerHTML =
+          '<p class="tool-empty">No expenses yet. Add fuel or service costs above.</p>';
+        return;
+      }
+      listEl.innerHTML = items
+        .slice(0, 40)
+        .map(function (item) {
+          // find real index in full store for delete
+          var all = loadJson(EXPENSE_KEY);
+          var realIndex = all.findIndex(function (row) {
+            return (
+              row.createdAt === item.createdAt &&
+              row.date === item.date &&
+              row.amount === item.amount &&
+              row.vehicle === item.vehicle
+            );
+          });
+          return (
+            '<div class="reminder-item">' +
+            '<div class="reminder-main">' +
+            '<strong>' +
+            escapeHtml(item.vehicle) +
+            ' · ' +
+            escapeHtml(CATEGORY_LABELS[item.category] || item.category) +
+            '</strong>' +
+            '<p>' +
+            money(item.amount) +
+            ' · ' +
+            formatDate(item.date) +
+            (item.odometer != null ? ' · ' + item.odometer + ' km' : '') +
+            (item.note ? ' · ' + escapeHtml(item.note) : '') +
+            '</p>' +
+            '</div>' +
+            '<button type="button" class="btn ghost expense-delete" data-index="' +
+            realIndex +
+            '">Remove</button>' +
+            '</div>'
+          );
+        })
+        .join('');
+    }
+
+    form.addEventListener('submit', function (e) {
+      e.preventDefault();
+      var vehicle = (form.elements.vehicle.value || '').trim();
+      var category = form.elements.category.value;
+      var amount = num(form.elements.amount);
+      var date = form.elements.date.value;
+      var odometer = num(form.elements.odometer);
+      var note = (form.elements.note.value || '').trim();
+      if (!vehicle || !(amount > 0) || !date) {
+        setText('expense-error', 'Add vehicle, amount, and date.');
+        showResult('expense-error', true);
+        return;
+      }
+      showResult('expense-error', false);
+      var items = loadJson(EXPENSE_KEY);
+      items.unshift({
+        vehicle: vehicle,
+        category: category,
+        amount: Math.round(amount),
+        date: date,
+        odometer: odometer > 0 ? Math.round(odometer) : null,
+        note: note,
+        createdAt: Date.now()
+      });
+      saveJson(EXPENSE_KEY, items.slice(0, 300));
+      form.reset();
+      if (dateInput) dateInput.value = new Date().toISOString().slice(0, 10);
+      form.elements.category.value = 'fuel';
+      renderList();
+    });
+
+    listEl.addEventListener('click', function (e) {
+      var btn = e.target && e.target.closest ? e.target.closest('.expense-delete') : null;
+      if (!btn) return;
+      var index = parseInt(btn.getAttribute('data-index'), 10);
+      if (isNaN(index) || index < 0) return;
+      var items = loadJson(EXPENSE_KEY);
+      items.splice(index, 1);
+      saveJson(EXPENSE_KEY, items);
+      renderList();
+    });
+
+    if (filterVehicle) filterVehicle.addEventListener('change', renderList);
+    if (filterCategory) filterCategory.addEventListener('change', renderList);
+    renderList();
+  }
+
+  function bindDocuments() {
+    var form = document.getElementById('document-form');
+    var listEl = document.getElementById('document-list');
+    if (!form || !listEl) return;
+
+    function renderDocs() {
+      var items = loadJson(DOCUMENT_KEY)
+        .slice()
+        .sort(function (a, b) {
+          return (a.dueDate || '').localeCompare(b.dueDate || '');
+        });
+      if (!items.length) {
+        listEl.innerHTML =
+          '<p class="tool-empty">No document dates yet. Add registration, token tax, or licence expiry below.</p>';
+        return;
+      }
+      listEl.innerHTML = items
+        .map(function (item, index) {
+          var due = daysUntil(item.dueDate);
+          var remind = item.remindDays || 30;
+          var status;
+          if (due < 0) {
+            status =
+              '<span class="tool-badge overdue">Expired ' +
+              Math.abs(due) +
+              ' days ago</span>';
+          } else if (due === 0) {
+            status = '<span class="tool-badge overdue">Due today</span>';
+          } else if (due <= remind) {
+            status =
+              '<span class="tool-badge due-soon">Due in ' + due + ' days</span>';
+          } else {
+            status =
+              '<span class="tool-badge ok">Due in ' + due + ' days</span>';
+          }
+          return (
+            '<div class="reminder-item">' +
+            '<div class="reminder-main">' +
+            '<strong>' +
+            escapeHtml(item.vehicle) +
+            ' · ' +
+            escapeHtml(DOC_LABELS[item.docType] || item.docType) +
+            '</strong>' +
+            '<p>Due ' +
+            formatDate(item.dueDate) +
+            ' · remind ' +
+            remind +
+            ' days before' +
+            (item.note ? ' · ' + escapeHtml(item.note) : '') +
+            '</p>' +
+            status +
+            '</div>' +
+            '<button type="button" class="btn ghost document-delete" data-index="' +
+            index +
+            '">Remove</button>' +
+            '</div>'
+          );
+        })
+        .join('');
+    }
+
+    form.addEventListener('submit', function (e) {
+      e.preventDefault();
+      var vehicle = (form.elements.vehicle.value || '').trim();
+      var docType = form.elements.docType.value;
+      var dueDate = form.elements.dueDate.value;
+      var remindDays = num(form.elements.remindDays);
+      var note = (form.elements.note.value || '').trim();
+      if (!vehicle || !dueDate || !(remindDays >= 1)) {
+        setText('document-error', 'Add a name, document type, due date, and remind-days value.');
+        showResult('document-error', true);
+        return;
+      }
+      showResult('document-error', false);
+      var items = loadJson(DOCUMENT_KEY);
+      items.push({
+        vehicle: vehicle,
+        docType: docType,
+        dueDate: dueDate,
+        remindDays: Math.round(remindDays),
+        note: note,
+        createdAt: Date.now()
+      });
+      items.sort(function (a, b) {
+        return (a.dueDate || '').localeCompare(b.dueDate || '');
+      });
+      saveJson(DOCUMENT_KEY, items.slice(0, 80));
+      form.reset();
+      form.elements.remindDays.value = '30';
+      form.elements.docType.value = 'registration';
+      renderDocs();
+    });
+
+    listEl.addEventListener('click', function (e) {
+      var btn = e.target && e.target.closest ? e.target.closest('.document-delete') : null;
+      if (!btn) return;
+      var index = parseInt(btn.getAttribute('data-index'), 10);
+      if (isNaN(index)) return;
+      var items = loadJson(DOCUMENT_KEY)
+        .slice()
+        .sort(function (a, b) {
+          return (a.dueDate || '').localeCompare(b.dueDate || '');
+        });
+      items.splice(index, 1);
+      saveJson(DOCUMENT_KEY, items);
+      renderDocs();
+    });
+
+    renderDocs();
+  }
+
   function boot() {
     bindFuelCost();
     bindMileage();
@@ -365,6 +734,8 @@
     bindMaintenance();
     bindPlateGuide();
     bindEngineTax();
+    bindExpenses();
+    bindDocuments();
   }
 
   if (document.readyState === 'loading') {

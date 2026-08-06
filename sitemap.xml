@@ -25,4 +25,6 @@
   <url><loc>https://vehicle-hub-pk.pages.dev/tools/trip-cost.html</loc><changefreq>monthly</changefreq><priority>0.7</priority></url>
   <url><loc>https://vehicle-hub-pk.pages.dev/tools/number-plate-guide.html</loc><changefreq>monthly</changefreq><priority>0.7</priority></url>
   <url><loc>https://vehicle-hub-pk.pages.dev/tools/engine-tax-guide.html</loc><changefreq>monthly</changefreq><priority>0.7</priority></url>
+  <url><loc>https://vehicle-hub-pk.pages.dev/tools/expenses.html</loc><changefreq>monthly</changefreq><priority>0.75</priority></url>
+  <url><loc>https://vehicle-hub-pk.pages.dev/tools/document-reminder.html</loc><changefreq>monthly</changefreq><priority>0.75</priority></url>
 </urlset>

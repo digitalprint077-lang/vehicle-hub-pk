@@ -2026,3 +2026,59 @@ html[data-theme="dark"] .tool-badge.overdue { color: #f0b4b4; }
     align-items: stretch;
   }
 }
+
+/* Tool icons */
+.tool-icon {
+  display: inline-flex;
+  align-items: center;
+  justify-content: center;
+  width: 40px;
+  height: 40px;
+  border-radius: 12px;
+  background: rgba(3, 139, 69, 0.12);
+  color: var(--sea-deep);
+  flex: 0 0 auto;
+}
+.tool-icon svg {
+  width: 22px;
+  height: 22px;
+}
+.tool-card .tool-icon {
+  margin-bottom: 4px;
+}
+.tool-nav-link {
+  display: flex !important;
+  align-items: center;
+  gap: 10px;
+}
+.tool-nav-link .tool-icon {
+  width: 28px;
+  height: 28px;
+  border-radius: 8px;
+}
+.tool-nav-link .tool-icon svg {
+  width: 15px;
+  height: 15px;
+}
+.side-panel .tool-nav-link {
+  gap: 10px;
+}
+.expense-stats {
+  display: grid !important;
+  grid-template-columns: repeat(3, minmax(0, 1fr));
+  gap: 12px !important;
+}
+.expense-stats > div {
+  padding: 4px 0;
+}
+#expense-summary .hint,
+.article .hint {
+  margin: 10px 0 0;
+  color: var(--muted);
+  font-size: 0.88rem;
+}
+@media (max-width: 640px) {
+  .expense-stats {
+    grid-template-columns: 1fr;
+  }
+}
