@@ -494,11 +494,147 @@
     initReveal(root || document);
   };
 
-  if (document.readyState === 'loading') {
-    document.addEventListener('DOMContentLoaded', function () {
-      initReveal(document);
+  function contactPath() {
+    var root = assetRoot();
+    return root + 'contact.html#feedback';
+  }
+
+  function mountFeedbackFab() {
+    if (document.getElementById('vhpk-feedback-fab')) return;
+    if (/\/contact\.html$/i.test(window.location.pathname || '')) return;
+    var a = document.createElement('a');
+    a.id = 'vhpk-feedback-fab';
+    a.className = 'feedback-fab';
+    a.href = contactPath() + '?from=' + encodeURIComponent(window.location.href);
+    a.setAttribute('aria-label', 'Send feedback');
+    a.innerHTML =
+      '<svg viewBox="0 0 24 24" aria-hidden="true"><path fill="currentColor" d="M4 4h16a2 2 0 0 1 2 2v9a2 2 0 0 1-2 2H9l-5 4v-4H4a2 2 0 0 1-2-2V6a2 2 0 0 1 2-2zm2 4v2h12V8H6zm0 4v2h8v-2H6z"/></svg>' +
+      '<span>Feedback</span>';
+    a.addEventListener('click', function () {
+      if (window.VHPK && typeof window.VHPK.track === 'function') {
+        window.VHPK.track('feedback_click', { page: window.location.pathname });
+      }
     });
-  } else {
+    document.body.appendChild(a);
+  }
+
+  function bindFeedbackForm() {
+    var form = document.getElementById('feedback-form');
+    if (!form) return;
+    var status = document.getElementById('feedback-status');
+    var pageInput = document.getElementById('feedback-page');
+    var params;
+    try {
+      params = new URLSearchParams(window.location.search || '');
+    } catch (e) {
+      params = null;
+    }
+    if (pageInput && !pageInput.value) {
+      var from = params && params.get('from');
+      pageInput.value = from || document.referrer || window.location.href;
+    }
+    if (params && params.get('type')) {
+      var typeEl = document.getElementById('feedback-type');
+      if (typeEl) typeEl.value = params.get('type');
+    }
+
+    function setStatus(msg, ok) {
+      if (!status) return;
+      status.hidden = false;
+      status.textContent = msg;
+      status.classList.toggle('is-ok', !!ok);
+      status.classList.toggle('is-err', !ok);
+    }
+
+    form.addEventListener('submit', function (e) {
+      e.preventDefault();
+      var type = (form.elements.type && form.elements.type.value) || 'other';
+      var name = ((form.elements.name && form.elements.name.value) || '').trim();
+      var email = ((form.elements.email && form.elements.email.value) || '').trim();
+      var page = ((form.elements.page && form.elements.page.value) || '').trim();
+      var message = ((form.elements.message && form.elements.message.value) || '').trim();
+      if (!message) {
+        setStatus('Please write a short message.', false);
+        return;
+      }
+
+      var subject = '[Vehicle Hub PK] ' + type + (page ? ' — ' + page : '');
+      var body =
+        'Type: ' +
+        type +
+        '\nName: ' +
+        (name || '—') +
+        '\nEmail: ' +
+        (email || '—') +
+        '\nPage: ' +
+        (page || '—') +
+        '\n\n' +
+        message;
+
+      var to = ((window.SITE_CONFIG && window.SITE_CONFIG.feedbackEmail) || '').trim();
+      if (window.VHPK && typeof window.VHPK.track === 'function') {
+        window.VHPK.track('feedback_submit', { type: type });
+      }
+
+      if (to) {
+        // FormSubmit — no backend required; confirm email once in inbox.
+        var endpoint = 'https://formsubmit.co/ajax/' + encodeURIComponent(to);
+        setStatus('Sending…', true);
+        fetch(endpoint, {
+          method: 'POST',
+          headers: {
+            'Content-Type': 'application/json',
+            Accept: 'application/json'
+          },
+          body: JSON.stringify({
+            _subject: subject,
+            name: name || 'Anonymous',
+            email: email || 'noreply@vehicle-hub-pk.pages.dev',
+            page: page,
+            type: type,
+            message: message
+          })
+        })
+          .then(function (res) {
+            if (!res.ok) throw new Error('send failed');
+            setStatus('Thanks — your feedback was sent.', true);
+            form.reset();
+            if (pageInput) pageInput.value = window.location.href;
+          })
+          .catch(function () {
+            window.location.href =
+              'mailto:' +
+              encodeURIComponent(to) +
+              '?subject=' +
+              encodeURIComponent(subject) +
+              '&body=' +
+              encodeURIComponent(body);
+          });
+        return;
+      }
+
+      // No inbox configured yet — open the user's mail app with a draft.
+      window.location.href =
+        'mailto:?subject=' +
+        encodeURIComponent(subject) +
+        '&body=' +
+        encodeURIComponent(body);
+      setStatus(
+        'Opening your email app. Tip: set feedbackEmail in js/site-config.js to receive submissions directly.',
+        true
+      );
+    });
+  }
+
+  function bootUi() {
     initReveal(document);
+    mountFeedbackFab();
+    bindFeedbackForm();
+  }
+
+  if (document.readyState === 'loading') {
+    document.addEventListener('DOMContentLoaded', bootUi);
+  } else {
+    bootUi();
   }
 })();

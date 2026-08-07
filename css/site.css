@@ -2041,7 +2041,8 @@ a.tool-card:hover {
   color: var(--muted);
 }
 .tool-form input,
-.tool-form select {
+.tool-form select,
+.tool-form textarea {
   width: 100%;
   min-height: 46px;
   border: 1px solid var(--line);
@@ -2051,10 +2052,69 @@ a.tool-card:hover {
   background: var(--surface);
   color: var(--ink);
 }
+.tool-form textarea {
+  min-height: 140px;
+  padding: 12px 14px;
+  resize: vertical;
+  line-height: 1.45;
+}
 .tool-form input:focus,
-.tool-form select:focus {
+.tool-form select:focus,
+.tool-form textarea:focus {
   outline: 2px solid rgba(3, 139, 69, 0.28);
   border-color: var(--sea);
+}
+.feedback-form {
+  margin: 8px 0 28px;
+}
+.feedback-status {
+  margin: 10px 0 0;
+  font-weight: 600;
+  font-size: 0.92rem;
+}
+.feedback-status.is-ok { color: var(--sea-deep); }
+.feedback-status.is-err { color: #b42318; }
+.feedback-fab {
+  position: fixed;
+  right: max(14px, env(safe-area-inset-right));
+  bottom: max(14px, env(safe-area-inset-bottom));
+  z-index: 40;
+  display: inline-flex;
+  align-items: center;
+  gap: 8px;
+  min-height: 44px;
+  padding: 0 14px 0 12px;
+  border-radius: 999px;
+  background: var(--sea);
+  color: #fff;
+  text-decoration: none;
+  font-weight: 700;
+  font-size: 0.92rem;
+  box-shadow: 0 12px 28px rgba(3, 80, 40, 0.28);
+  transition: transform .18s ease, background-color .2s ease;
+}
+.feedback-fab svg {
+  width: 18px;
+  height: 18px;
+  display: block;
+}
+.feedback-fab:hover {
+  background: var(--sea-deep);
+  transform: translateY(-2px);
+  color: #fff;
+}
+html[data-theme="dark"] .feedback-fab {
+  box-shadow: 0 12px 28px rgba(0, 0, 0, 0.45);
+}
+@media (max-width: 520px) {
+  .feedback-fab span { display: none; }
+  .feedback-fab {
+    width: 48px;
+    height: 48px;
+    padding: 0;
+    justify-content: center;
+    border-radius: 50%;
+  }
 }
 .tool-form .field-row {
   display: grid;
