@@ -600,7 +600,7 @@
       })
         .then(function (res) {
           if (!res.ok) throw new Error('send failed');
-          setStatus('Thanks — your feedback was sent. Check tigerpaw716@gmail.com for a one-time FormSubmit confirmation if this is the first message.', true);
+          setStatus('Thanks — your feedback was sent.', true);
           form.reset();
           if (pageInput) pageInput.value = window.location.href;
         })
