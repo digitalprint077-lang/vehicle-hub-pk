@@ -13,7 +13,7 @@
  *   then update robots.txt + sitemap.xml to match.
  */
 window.SITE_CONFIG = {
-  origin: 'https://vehicle-hub-pk.pages.dev',
+  origin: 'https://vehiclehubpk.com',
   siteName: 'Vehicle Hub PK',
   analytics: {
     cloudflareToken: '',

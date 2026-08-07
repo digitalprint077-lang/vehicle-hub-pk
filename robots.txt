@@ -2,4 +2,4 @@ User-agent: *
 Allow: /
 
 # Prefer the live custom domain in Search Console once attached.
-Sitemap: https://vehicle-hub-pk.pages.dev/sitemap.xml
+Sitemap: https://vehiclehubpk.com/sitemap.xml
