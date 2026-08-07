@@ -17,6 +17,14 @@
     return '';
   }
 
+  function hidePreloader(el, reduce) {
+    if (!el || el.classList.contains('is-done')) return;
+    el.classList.add('is-done');
+    setTimeout(function () {
+      if (el && el.parentNode) el.parentNode.removeChild(el);
+    }, reduce ? 0 : 800);
+  }
+
   function bootLoader() {
     if (!document.body) return;
     var reduce =
@@ -50,57 +58,65 @@
       existing = d;
     }
     function hide() {
-      if (!existing || existing.classList.contains('is-done')) return;
-      existing.classList.add('is-done');
-      setTimeout(function () {
-        if (existing && existing.parentNode) existing.parentNode.removeChild(existing);
-      }, reduce ? 0 : 800);
+      hidePreloader(existing, reduce);
     }
-    var wait = reduce ? 0 : 650;
-    if (document.readyState === 'complete') {
+    // Don't wait on remote fonts/images — hide after DOM is ready.
+    var wait = reduce ? 0 : 400;
+    if (document.readyState === 'complete' || document.readyState === 'interactive') {
       setTimeout(hide, wait);
     } else {
-      window.addEventListener('load', function () {
+      document.addEventListener('DOMContentLoaded', function () {
         setTimeout(hide, wait);
       });
     }
-    setTimeout(hide, 3500);
+    setTimeout(hide, reduce ? 200 : 1600);
   }
 
   if (document.body) bootLoader();
   else document.addEventListener('DOMContentLoaded', bootLoader);
 
   function preferredTheme() {
-    // Always open in day/light mode.
     try {
-      localStorage.setItem(THEME_KEY, 'light');
+      var saved = localStorage.getItem(THEME_KEY);
+      if (saved === 'dark') return 'dark';
+      if (saved === 'light') return 'light';
     } catch (e) {}
+    // First visit: day/light mode.
     return 'light';
   }
 
   function applyTheme(theme) {
-    var next = 'light';
+    var next = theme === 'dark' ? 'dark' : 'light';
     document.documentElement.setAttribute('data-theme', next);
     var meta = document.querySelector('meta[name="theme-color"]');
-    if (meta) meta.setAttribute('content', '#038b45');
+    if (meta) meta.setAttribute('content', next === 'dark' ? '#0f1612' : '#038b45');
     document.querySelectorAll('.theme-toggle').forEach(function (btn) {
-      btn.hidden = true;
-      btn.setAttribute('aria-hidden', 'true');
+      btn.hidden = false;
+      btn.removeAttribute('aria-hidden');
+      btn.setAttribute('aria-pressed', next === 'dark' ? 'true' : 'false');
+      btn.setAttribute(
+        'aria-label',
+        next === 'dark' ? 'Switch to light mode' : 'Switch to dark mode'
+      );
+      btn.title = next === 'dark' ? 'Light mode' : 'Dark mode';
     });
   }
 
   function setTheme(theme) {
-    applyTheme('light');
+    applyTheme(theme);
     try {
-      localStorage.setItem(THEME_KEY, 'light');
+      localStorage.setItem(THEME_KEY, theme === 'dark' ? 'dark' : 'light');
     } catch (e) {}
   }
 
-  applyTheme('light');
+  applyTheme(preferredTheme());
 
   document.querySelectorAll('.theme-toggle').forEach(function (btn) {
-    btn.hidden = true;
-    btn.setAttribute('aria-hidden', 'true');
+    btn.hidden = false;
+    btn.addEventListener('click', function () {
+      var current = document.documentElement.getAttribute('data-theme') === 'dark' ? 'dark' : 'light';
+      setTheme(current === 'dark' ? 'light' : 'dark');
+    });
   });
 
   function prefersReducedMotion() {
@@ -150,10 +166,17 @@
         }
 
         var active = false;
+        var hrefAttr = (href || '').trim();
+        var isHomeLink =
+          !!a.querySelector('[data-i18n="home"]') ||
+          hrefAttr === './' ||
+          hrefAttr === '../' ||
+          hrefAttr === '/' ||
+          /^(?:\.\.\/)?index\.html$/i.test(hrefAttr);
         // External verify portals can be "/", which must never match Home.
         if (linkUrl.origin !== window.location.origin) {
           active = false;
-        } else if (label === 'home') {
+        } else if (isHomeLink) {
           active = isHome;
         } else if (linkUrl.hash) {
           active =
@@ -266,7 +289,26 @@
     }
   }
 
+  var leaveFailSafeTimer = null;
+
+  function restorePageVisibility() {
+    if (!document.body) return;
+    document.body.classList.remove('page-leaving');
+    document.body.classList.add('page-ready');
+    if (leaveFailSafeTimer) {
+      clearTimeout(leaveFailSafeTimer);
+      leaveFailSafeTimer = null;
+    }
+  }
+
   function bindPageTransitions() {
+    // Back/forward bfcache can restore a page stuck with blank content under the header.
+    window.addEventListener('pageshow', function () {
+      restorePageVisibility();
+      var stuck = document.getElementById('pei-preloader');
+      if (stuck) hidePreloader(stuck, prefersReducedMotion());
+    });
+
     if (prefersReducedMotion()) {
       document.body.classList.add('page-ready');
       return;
@@ -284,8 +326,6 @@
 
       e.preventDefault();
       var href = a.href;
-      document.body.classList.add('page-leaving');
-      document.body.classList.remove('page-ready');
 
       var toggle = document.getElementById('nav-toggle');
       var mobile = document.getElementById('mobile-nav');
@@ -294,9 +334,17 @@
         if (toggle) toggle.setAttribute('aria-expanded', 'false');
       }
 
+      document.body.classList.add('page-leaving');
+      document.body.classList.remove('page-ready');
+
+      if (leaveFailSafeTimer) clearTimeout(leaveFailSafeTimer);
+      leaveFailSafeTimer = setTimeout(function () {
+        restorePageVisibility();
+      }, 2500);
+
       window.setTimeout(function () {
         window.location.href = href;
-      }, 220);
+      }, 140);
     });
   }
 
@@ -322,6 +370,61 @@
   bindNavDropdowns();
   bindPressFeedback();
   bindPageTransitions();
+  decorateNavIcons();
+
+  function decorateNavIcons() {
+    var icons = {
+      home:
+        '<svg viewBox="0 0 24 24" aria-hidden="true"><path fill="currentColor" d="M12 3.2 3 11h2.5v8.5A1.5 1.5 0 0 0 7 21h3.2v-5.2h3.6V21H17a1.5 1.5 0 0 0 1.5-1.5V11H21L12 3.2z"/></svg>',
+      excise:
+        '<svg viewBox="0 0 24 24" aria-hidden="true"><path fill="currentColor" d="M12 2 3 6v2h18V6L12 2zm-7 8v8H4v2h16v-2h-1v-8h-2v8h-3v-8h-2v8H9v-8H5z"/></svg>',
+      licence:
+        '<svg viewBox="0 0 24 24" aria-hidden="true"><path fill="currentColor" d="M3 5h18a2 2 0 0 1 2 2v10a2 2 0 0 1-2 2H3a2 2 0 0 1-2-2V7a2 2 0 0 1 2-2zm2 3v2h6V8H5zm0 4v2h4v-2H5zm10-3.5a2.5 2.5 0 1 0 .001 5.001A2.5 2.5 0 0 0 15 8.5z"/></svg>',
+      tools:
+        '<svg viewBox="0 0 24 24" aria-hidden="true"><path fill="currentColor" d="M14.7 4.3a5 5 0 0 0-6.8 6.1L3 15.3 4.4 20l4.8-1.3 4.9-4.9a5 5 0 0 0 5.9-6.7l-3.5 3.5-2.8-2.8 3-3z"/></svg>',
+      how:
+        '<svg viewBox="0 0 24 24" aria-hidden="true"><path fill="currentColor" d="M7 4h13v2H7V4zm0 7h13v2H7v-2zm0 7h13v2H7v-2zM3.5 4.5h2v2h-2v-2zm0 7h2v2h-2v-2zm0 7h2v2h-2v-2z"/></svg>',
+      about:
+        '<svg viewBox="0 0 24 24" aria-hidden="true"><path fill="currentColor" d="M12 2a10 10 0 1 0 .001 20.001A10 10 0 0 0 12 2zm-1 5h2v2h-2V7zm0 4h2v6h-2v-6z"/></svg>',
+      contact:
+        '<svg viewBox="0 0 24 24" aria-hidden="true"><path fill="currentColor" d="M3 5h18a2 2 0 0 1 2 2v10a2 2 0 0 1-2 2H3a2 2 0 0 1-2-2V7a2 2 0 0 1 2-2zm0 2.4 8.2 5.5a1.5 1.5 0 0 0 1.6 0L21 7.4V7H3v.4z"/></svg>'
+    };
+
+    function wrapIcon(el, key) {
+      if (!el || el.querySelector('.nav-tab-icon')) return;
+      var span = document.createElement('span');
+      span.className = 'nav-tab-icon';
+      span.setAttribute('aria-hidden', 'true');
+      span.innerHTML = icons[key];
+      el.insertBefore(span, el.firstChild);
+    }
+
+    document.querySelectorAll('.nav-desktop > a, .mobile-nav > a').forEach(function (a) {
+      var label = (a.textContent || '').replace(/\s+/g, ' ').trim().toLowerCase();
+      var key = a.getAttribute('data-i18n');
+      // data-i18n is on child span often
+      var childKey = a.querySelector('[data-i18n]');
+      if (childKey) key = childKey.getAttribute('data-i18n');
+      if (key === 'home' || label === 'home' || label.indexOf('ہوم') !== -1 || label.indexOf('کور') !== -1) {
+        wrapIcon(a, 'home');
+      } else if (key === 'how' || label.indexOf('how it works') !== -1) {
+        wrapIcon(a, 'how');
+      } else if (key === 'about' || label.indexOf('about') !== -1) {
+        wrapIcon(a, 'about');
+      } else if (key === 'contact' || label.indexOf('contact') !== -1) {
+        wrapIcon(a, 'contact');
+      }
+    });
+
+    document.querySelectorAll('.nav-drop-btn').forEach(function (btn) {
+      var menu = (btn.closest('.nav-dropdown') || {}).getAttribute
+        ? btn.closest('.nav-dropdown').getAttribute('data-menu')
+        : '';
+      if (menu === 'excise') wrapIcon(btn, 'excise');
+      else if (menu === 'licence') wrapIcon(btn, 'licence');
+      else if (menu === 'tools') wrapIcon(btn, 'tools');
+    });
+  }
 
   function revealSelector() {
     return [

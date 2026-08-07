@@ -14,8 +14,12 @@
   <link rel="apple-touch-icon" href="../assets/logo-192.png">
       <script>
     (function () {
-      try { localStorage.setItem('pei-theme', 'light'); } catch (e) {}
-      document.documentElement.setAttribute('data-theme', 'light');
+      try {
+        var t = localStorage.getItem('pei-theme');
+        document.documentElement.setAttribute('data-theme', t === 'dark' ? 'dark' : 'light');
+      } catch (e) {
+        document.documentElement.setAttribute('data-theme', 'light');
+      }
     })();
   </script>
   <link rel="stylesheet" href="../css/site.css">

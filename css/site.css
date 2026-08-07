@@ -1716,10 +1716,23 @@ body.page-ready > :not(#pei-preloader):not(.site-header) {
 body.page-leaving {
   pointer-events: none;
 }
-body.page-leaving > :not(#pei-preloader):not(.site-header) {
+/* Full-viewport leave veil — avoids blank mint body under sticky header */
+body.page-leaving::after {
+  content: "";
+  position: fixed;
+  inset: 0;
+  z-index: 9998;
+  background: var(--fog);
   opacity: 0;
-  transform: translateY(-8px);
-  transition: opacity .22s ease, transform .22s ease;
+  animation: pei-leave-veil .14s ease forwards;
+  pointer-events: none;
+}
+@keyframes pei-leave-veil {
+  to { opacity: 1; }
+}
+body.page-leaving > :not(#pei-preloader):not(.site-header) {
+  opacity: 0.4;
+  transition: opacity .14s ease;
 }
 
 .reveal {
@@ -1806,6 +1819,10 @@ a.btn.is-pressing {
     opacity: 1 !important;
     transform: none !important;
     transition: none !important;
+  }
+  body.page-leaving::after {
+    animation: none !important;
+    opacity: 0 !important;
   }
   .province-card:hover,
   .category-card:hover,
@@ -2112,9 +2129,6 @@ html[data-theme="dark"] .tool-badge.overdue { color: #f0b4b4; }
   outline: 2px solid rgba(3, 139, 69, 0.28);
   border-color: var(--sea);
 }
-.theme-toggle[hidden] {
-  display: none !important;
-}
 
 /* Modern tool icons */
 .tool-icon.tool-icon-modern {
@@ -2207,4 +2221,43 @@ html.is-rtl .home-hero-inner {
 }
 html.is-rtl .header-actions {
   flex-direction: row-reverse;
+}
+
+
+/* Main nav tab icons */
+.nav-tab-icon {
+  display: inline-flex;
+  align-items: center;
+  justify-content: center;
+  width: 18px;
+  height: 18px;
+  margin-inline-end: 6px;
+  color: var(--sea-deep);
+  flex: 0 0 auto;
+  opacity: 0.9;
+}
+.nav-tab-icon svg {
+  width: 16px;
+  height: 16px;
+  display: block;
+}
+.nav-desktop > a,
+.nav-drop-btn,
+.mobile-nav > a {
+  display: inline-flex;
+  align-items: center;
+}
+.mobile-nav > a,
+.mobile-nav .nav-drop-btn {
+  width: 100%;
+}
+.nav-desktop > a.is-active .nav-tab-icon,
+.nav-dropdown.has-active > .nav-drop-btn .nav-tab-icon,
+.nav-dropdown.is-open > .nav-drop-btn .nav-tab-icon {
+  color: var(--sea);
+  opacity: 1;
+}
+html.is-rtl .nav-tab-icon {
+  margin-inline-end: 0;
+  margin-inline-start: 6px;
 }
