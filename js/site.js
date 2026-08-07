@@ -571,58 +571,49 @@
         '\n\n' +
         message;
 
-      var to = ((window.SITE_CONFIG && window.SITE_CONFIG.feedbackEmail) || '').trim();
+      var to = (
+        (form.getAttribute('data-feedback-to') || '') ||
+        ((window.SITE_CONFIG && window.SITE_CONFIG.feedbackEmail) || '') ||
+        'tigerpaw716@gmail.com'
+      ).trim();
       if (window.VHPK && typeof window.VHPK.track === 'function') {
         window.VHPK.track('feedback_submit', { type: type });
       }
 
-      if (to) {
-        // FormSubmit — no backend required; confirm email once in inbox.
-        var endpoint = 'https://formsubmit.co/ajax/' + encodeURIComponent(to);
-        setStatus('Sending…', true);
-        fetch(endpoint, {
-          method: 'POST',
-          headers: {
-            'Content-Type': 'application/json',
-            Accept: 'application/json'
-          },
-          body: JSON.stringify({
-            _subject: subject,
-            name: name || 'Anonymous',
-            email: email || 'noreply@vehicle-hub-pk.pages.dev',
-            page: page,
-            type: type,
-            message: message
-          })
+      // FormSubmit — no backend required; confirm email once in inbox.
+      var endpoint = 'https://formsubmit.co/ajax/' + encodeURIComponent(to);
+      setStatus('Sending…', true);
+      fetch(endpoint, {
+        method: 'POST',
+        headers: {
+          'Content-Type': 'application/json',
+          Accept: 'application/json'
+        },
+        body: JSON.stringify({
+          _subject: subject,
+          name: name || 'Anonymous',
+          email: email || 'noreply@vehicle-hub-pk.pages.dev',
+          page: page,
+          type: type,
+          message: message
         })
-          .then(function (res) {
-            if (!res.ok) throw new Error('send failed');
-            setStatus('Thanks — your feedback was sent.', true);
-            form.reset();
-            if (pageInput) pageInput.value = window.location.href;
-          })
-          .catch(function () {
-            window.location.href =
-              'mailto:' +
-              encodeURIComponent(to) +
-              '?subject=' +
-              encodeURIComponent(subject) +
-              '&body=' +
-              encodeURIComponent(body);
-          });
-        return;
-      }
-
-      // No inbox configured yet — open the user's mail app with a draft.
-      window.location.href =
-        'mailto:?subject=' +
-        encodeURIComponent(subject) +
-        '&body=' +
-        encodeURIComponent(body);
-      setStatus(
-        'Opening your email app. Tip: set feedbackEmail in js/site-config.js to receive submissions directly.',
-        true
-      );
+      })
+        .then(function (res) {
+          if (!res.ok) throw new Error('send failed');
+          setStatus('Thanks — your feedback was sent. Check tigerpaw716@gmail.com for a one-time FormSubmit confirmation if this is the first message.', true);
+          form.reset();
+          if (pageInput) pageInput.value = window.location.href;
+        })
+        .catch(function () {
+          setStatus('Opening your email app to send to ' + to + '…', true);
+          window.location.href =
+            'mailto:' +
+            encodeURIComponent(to) +
+            '?subject=' +
+            encodeURIComponent(subject) +
+            '&body=' +
+            encodeURIComponent(body);
+        });
     });
   }
 
