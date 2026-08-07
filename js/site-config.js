@@ -19,5 +19,5 @@ window.SITE_CONFIG = {
     cloudflareToken: '',
     ga4Id: ''
   },
-  feedbackEmail: ''
+  feedbackEmail: 'tigerpaw716@gmail.com'
 };
