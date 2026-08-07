@@ -1002,20 +1002,20 @@ html[data-theme="dark"] .home-hero {
   inset: 0;
   z-index: -1;
   background:
-    linear-gradient(115deg, rgba(241, 248, 243, 0.97) 0%, rgba(232, 246, 238, 0.9) 34%, rgba(15, 36, 24, 0.55) 62%, rgba(15, 36, 24, 0.72) 100%),
-    linear-gradient(0deg, rgba(15, 36, 24, 0.28), rgba(15, 36, 24, 0.28)),
+    linear-gradient(115deg, rgba(241, 248, 243, 0.94) 0%, rgba(232, 246, 238, 0.72) 36%, rgba(15, 36, 24, 0.28) 68%, rgba(15, 36, 24, 0.42) 100%),
+    linear-gradient(0deg, rgba(15, 36, 24, 0.12), rgba(15, 36, 24, 0.12)),
     url("https://images.unsplash.com/photo-1601584115197-04ecc0da31d7?auto=format&fit=crop&w=2000&q=80") right center / cover no-repeat;
-  opacity: 0.78;
-  filter: saturate(0.85) contrast(1.05);
+  opacity: 0.9;
+  filter: saturate(0.92) contrast(1.04);
   animation: pei-hero-zoom 12s ease-out both;
 }
 html[data-theme="dark"] .home-hero-bg {
   background:
-    linear-gradient(115deg, rgba(15, 22, 18, 0.96) 0%, rgba(15, 22, 18, 0.88) 38%, rgba(8, 14, 11, 0.72) 68%, rgba(8, 14, 11, 0.82) 100%),
-    linear-gradient(0deg, rgba(0, 0, 0, 0.35), rgba(0, 0, 0, 0.35)),
+    linear-gradient(115deg, rgba(15, 22, 18, 0.92) 0%, rgba(15, 22, 18, 0.78) 40%, rgba(8, 14, 11, 0.5) 70%, rgba(8, 14, 11, 0.62) 100%),
+    linear-gradient(0deg, rgba(0, 0, 0, 0.22), rgba(0, 0, 0, 0.22)),
     url("https://images.unsplash.com/photo-1601584115197-04ecc0da31d7?auto=format&fit=crop&w=2000&q=80") right center / cover no-repeat;
-  opacity: 0.7;
-  filter: saturate(0.75) contrast(1.08);
+  opacity: 0.82;
+  filter: saturate(0.85) contrast(1.06);
 }
 .home-hero-inner {
   width: min(1200px, calc(100% - var(--pad-x) * 2));
@@ -1063,6 +1063,10 @@ html[data-theme="dark"] .home-hero-bg {
   animation: pei-rise .75s cubic-bezier(.22,1,.36,1) .16s both;
 }
 .home-hero > .home-hero-inner > p:not(.hero-kicker):not(.hero-sub) {
+  text-shadow: 0 1px 0 rgba(241, 248, 243, 0.7);
+}
+.home-hero h1,
+.home-hero .hero-sub {
   text-shadow: 0 1px 0 rgba(241, 248, 243, 0.55);
 }
 html[data-theme="dark"] .home-hero > .home-hero-inner > p:not(.hero-kicker):not(.hero-sub) {
