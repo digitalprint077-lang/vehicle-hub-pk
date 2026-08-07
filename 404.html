@@ -9,18 +9,14 @@
   <meta name="description" content="That page is missing. Browse Excise services or driving licence guides on Vehicle Hub PK.">
   <link rel="preconnect" href="https://fonts.googleapis.com">
   <link rel="preconnect" href="https://fonts.gstatic.com" crossorigin>
-  <link href="https://fonts.googleapis.com/css2?family=Outfit:wght@400;500;600;700;800&display=swap" rel="stylesheet">
+  <link href="https://fonts.googleapis.com/css2?family=Outfit:wght@400;500;600;700;800&family=Noto+Nastaliq+Urdu:wght@400;700&display=swap" rel="stylesheet">
   <link rel="icon" href="assets/favicon.svg" type="image/svg+xml">
   <link rel="icon" href="assets/favicon-32.png" type="image/png" sizes="32x32">
   <link rel="apple-touch-icon" href="assets/logo-192.png">
   <script>
     (function () {
-      try {
-        var t = localStorage.getItem('pei-theme');
-        document.documentElement.setAttribute('data-theme', t === 'dark' ? 'dark' : 'light');
-      } catch (e) {
-        document.documentElement.setAttribute('data-theme', 'light');
-      }
+      try { localStorage.setItem('pei-theme', 'light'); } catch (e) {}
+      document.documentElement.setAttribute('data-theme', 'light');
     })();
   </script>
   <link rel="stylesheet" href="css/site.css">
@@ -30,13 +26,13 @@
     <div class="site-header-inner">
       <a class="brand-link" href="./"><img class="brand-mark" src="assets/logo.svg" width="36" height="36" alt="Vehicle Hub PK"><span>Vehicle Hub PK</span></a>
       <nav class="nav-desktop">
-        <a href="./">Home</a>
+        <a href="./"><span data-i18n="home">Home</span></a>
         <a href="guides/provinces.html">Excise services</a>
         <a href="guides/driving-licence.html">Driving licence</a>
-        <a href="tools/">Vehicle Tools</a>
-        <a href="how-it-works.html">How it works</a>
-        <a href="about.html">About us</a>
-        <a href="contact.html">Contact</a>
+        <a href="tools/"><span data-i18n="vehicleTools">Vehicle Tools</span></a>
+        <a href="how-it-works.html"><span data-i18n="how">How it works</span></a>
+        <a href="about.html"><span data-i18n="about">About us</span></a>
+        <a href="contact.html"><span data-i18n="contact">Contact</span></a>
       </nav>
       <div class="header-actions">
         <button class="theme-toggle" type="button" aria-label="Switch to dark mode" aria-pressed="false" title="Dark mode">
@@ -47,13 +43,13 @@
       </div>
     </div>
     <nav class="mobile-nav" id="mobile-nav">
-      <a href="./">Home</a>
+      <a href="./"><span data-i18n="home">Home</span></a>
       <a href="guides/provinces.html">Excise services</a>
       <a href="guides/driving-licence.html">Driving licence</a>
-      <a href="tools/">Vehicle Tools</a>
-      <a href="how-it-works.html">How it works</a>
-      <a href="about.html">About us</a>
-      <a href="contact.html">Contact</a>
+      <a href="tools/"><span data-i18n="vehicleTools">Vehicle Tools</span></a>
+      <a href="how-it-works.html"><span data-i18n="how">How it works</span></a>
+      <a href="about.html"><span data-i18n="about">About us</span></a>
+      <a href="contact.html"><span data-i18n="contact">Contact</span></a>
     </nav>
   </header>
 
@@ -68,7 +64,7 @@
         <a class="btn" href="./">Home</a>
         <a class="btn ghost" href="guides/provinces.html">Excise services</a>
         <a class="btn ghost" href="guides/driving-licence.html">Driving licence</a>
-        <a class="btn ghost" href="tools/">Vehicle Tools</a>
+        <a class="btn ghost" href="tools/"><span data-i18n="vehicleTools">Vehicle Tools</span></a>
         <a class="btn ghost" href="contact.html">Contact</a>
       </div>
     </article>
@@ -83,5 +79,6 @@
     </div>
   </footer>
   <script src="js/site.js"></script>
+  <script src="js/i18n.js"></script>
 </body>
 </html>

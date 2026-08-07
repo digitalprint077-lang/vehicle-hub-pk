@@ -27,4 +27,8 @@
   <url><loc>https://vehicle-hub-pk.pages.dev/tools/engine-tax-guide.html</loc><changefreq>monthly</changefreq><priority>0.7</priority></url>
   <url><loc>https://vehicle-hub-pk.pages.dev/tools/expenses.html</loc><changefreq>monthly</changefreq><priority>0.75</priority></url>
   <url><loc>https://vehicle-hub-pk.pages.dev/tools/document-reminder.html</loc><changefreq>monthly</changefreq><priority>0.75</priority></url>
+  <url><loc>https://vehicle-hub-pk.pages.dev/tools/car-finance.html</loc><changefreq>monthly</changefreq><priority>0.75</priority></url>
+  <url><loc>https://vehicle-hub-pk.pages.dev/tools/motorway-toll.html</loc><changefreq>monthly</changefreq><priority>0.75</priority></url>
+  <url><loc>https://vehicle-hub-pk.pages.dev/tools/used-car-value.html</loc><changefreq>monthly</changefreq><priority>0.75</priority></url>
+  <url><loc>https://vehicle-hub-pk.pages.dev/tools/buyer-checklist.html</loc><changefreq>monthly</changefreq><priority>0.75</priority></url>
 </urlset>

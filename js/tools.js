@@ -727,6 +727,169 @@
     renderDocs();
   }
 
+  function bindFinance() {
+    var form = document.getElementById('finance-form');
+    if (!form) return;
+    form.addEventListener('submit', function (e) {
+      e.preventDefault();
+      var price = num(form.elements.price);
+      var down = num(form.elements.down);
+      var years = num(form.elements.years);
+      var rate = num(form.elements.rate);
+      if (!(price > 0) || !(years > 0) || !(rate >= 0)) {
+        showResult('finance-result', false);
+        setText('finance-error', 'Enter vehicle price, tenure, and interest rate.');
+        showResult('finance-error', true);
+        return;
+      }
+      if (!isFinite(down) || down < 0) down = 0;
+      if (down >= price) {
+        showResult('finance-result', false);
+        setText('finance-error', 'Down payment must be less than vehicle price.');
+        showResult('finance-error', true);
+        return;
+      }
+      showResult('finance-error', false);
+      var principal = price - down;
+      var months = Math.round(years * 12);
+      var r = rate / 100 / 12;
+      var emi;
+      if (r === 0) emi = principal / months;
+      else {
+        var pow = Math.pow(1 + r, months);
+        emi = (principal * r * pow) / (pow - 1);
+      }
+      var total = emi * months;
+      var interest = total - principal;
+      setText('finance-principal', money(principal));
+      setText('finance-emi', money(emi));
+      setText('finance-interest', money(interest));
+      setText('finance-total', money(total));
+      showResult('finance-result', true);
+    });
+  }
+
+  function bindToll() {
+    var form = document.getElementById('toll-form');
+    if (!form) return;
+    // Approximate one-way class-1 car tolls (PKR) — educational estimates.
+    var routes = {
+      'm1-isb-psh': { name: 'M-1 Islamabad ↔ Peshawar', toll: 650 },
+      'm2-lhr-isb': { name: 'M-2 Lahore ↔ Islamabad', toll: 1450 },
+      'm3-lhr-abd': { name: 'M-3 Lahore ↔ Abdul Hakeem', toll: 700 },
+      'm4-pnv-mtn': { name: 'M-4 Pindi Bhattian ↔ Multan', toll: 950 },
+      'm5-mtn-suk': { name: 'M-5 Multan ↔ Sukkur', toll: 1800 },
+      'm9-khi-hdr': { name: 'M-9 Karachi ↔ Hyderabad', toll: 350 },
+      'sialkot-lhr': { name: 'Sialkot–Lahore Motorway', toll: 450 }
+    };
+    form.addEventListener('submit', function (e) {
+      e.preventDefault();
+      var route = form.elements.route.value;
+      var trips = num(form.elements.trips);
+      var vehicle = form.elements.vehicleClass.value;
+      if (!routes[route] || !(trips >= 1)) {
+        showResult('toll-result', false);
+        setText('toll-error', 'Choose a route and number of one-way trips.');
+        showResult('toll-error', true);
+        return;
+      }
+      showResult('toll-error', false);
+      var base = routes[route].toll;
+      var mult = vehicle === 'car' ? 1 : vehicle === 'wagon' ? 1.4 : 2.2;
+      var oneWay = Math.round(base * mult);
+      var total = oneWay * trips;
+      setText('toll-route', routes[route].name);
+      setText('toll-oneway', money(oneWay));
+      setText('toll-total', money(total));
+      setText(
+        'toll-note',
+        'Estimate only — live M-Tag / NHA rates change. Confirm on the official motorway app or plaza boards before travel.'
+      );
+      showResult('toll-result', true);
+    });
+  }
+
+  function bindUsedCar() {
+    var form = document.getElementById('used-car-form');
+    if (!form) return;
+    form.addEventListener('submit', function (e) {
+      e.preventDefault();
+      var newPrice = num(form.elements.newPrice);
+      var year = num(form.elements.year);
+      var km = num(form.elements.km);
+      var condition = form.elements.condition.value;
+      var nowYear = new Date().getFullYear();
+      if (!(newPrice > 0) || !(year >= 1990) || year > nowYear || !(km >= 0)) {
+        showResult('used-car-result', false);
+        setText('used-car-error', 'Enter a valid new-price reference, model year, and odometer km.');
+        showResult('used-car-error', true);
+        return;
+      }
+      showResult('used-car-error', false);
+      var age = Math.max(0, nowYear - year);
+      // Rough Pakistan used-market curve: steeper early drop, then slower.
+      var ageFactor = Math.pow(0.88, Math.min(age, 12)) * Math.pow(0.95, Math.max(0, age - 12));
+      var kmPenalty = Math.min(0.35, (km / 20000) * 0.02);
+      var cond =
+        condition === 'excellent' ? 1.05 : condition === 'good' ? 1 : condition === 'average' ? 0.92 : 0.8;
+      var estimate = newPrice * ageFactor * (1 - kmPenalty) * cond;
+      var low = estimate * 0.92;
+      var high = estimate * 1.08;
+      setText('used-car-mid', money(estimate));
+      setText('used-car-range', money(low) + ' – ' + money(high));
+      setText(
+        'used-car-note',
+        'Ballpark only for planning. Local demand, accident history, import vs local, and city premiums matter — verify on Excise and inspect in person.'
+      );
+      showResult('used-car-result', true);
+    });
+  }
+
+  function bindChecklist() {
+    var root = document.getElementById('buyer-checklist');
+    if (!root) return;
+    var KEY = 'vhpk-buyer-checklist';
+    var boxes = root.querySelectorAll('input[type="checkbox"][data-check]');
+    function save() {
+      var state = {};
+      boxes.forEach(function (box) {
+        state[box.getAttribute('data-check')] = !!box.checked;
+      });
+      try {
+        localStorage.setItem(KEY, JSON.stringify(state));
+      } catch (e) {}
+      var done = 0;
+      boxes.forEach(function (b) {
+        if (b.checked) done++;
+      });
+      setText('checklist-progress', done + ' / ' + boxes.length + ' checks complete');
+      var bar = document.getElementById('checklist-bar');
+      if (bar) bar.style.width = Math.round((done / boxes.length) * 100) + '%';
+    }
+    try {
+      var saved = JSON.parse(localStorage.getItem(KEY) || '{}');
+      boxes.forEach(function (box) {
+        var id = box.getAttribute('data-check');
+        if (saved[id]) box.checked = true;
+        box.addEventListener('change', save);
+      });
+    } catch (e) {
+      boxes.forEach(function (box) {
+        box.addEventListener('change', save);
+      });
+    }
+    var reset = document.getElementById('checklist-reset');
+    if (reset) {
+      reset.addEventListener('click', function () {
+        boxes.forEach(function (b) {
+          b.checked = false;
+        });
+        save();
+      });
+    }
+    save();
+  }
+
   function boot() {
     bindFuelCost();
     bindMileage();
@@ -736,6 +899,10 @@
     bindEngineTax();
     bindExpenses();
     bindDocuments();
+    bindFinance();
+    bindToll();
+    bindUsedCar();
+    bindChecklist();
   }
 
   if (document.readyState === 'loading') {

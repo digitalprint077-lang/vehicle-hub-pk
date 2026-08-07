@@ -71,42 +71,36 @@
   else document.addEventListener('DOMContentLoaded', bootLoader);
 
   function preferredTheme() {
+    // Always open in day/light mode.
     try {
-      var saved = localStorage.getItem(THEME_KEY);
-      if (saved === 'dark') return 'dark';
+      localStorage.setItem(THEME_KEY, 'light');
     } catch (e) {}
     return 'light';
   }
 
   function applyTheme(theme) {
-    var next = theme === 'dark' ? 'dark' : 'light';
+    var next = 'light';
     document.documentElement.setAttribute('data-theme', next);
     var meta = document.querySelector('meta[name="theme-color"]');
-    if (meta) meta.setAttribute('content', next === 'dark' ? '#0f1612' : '#038b45');
+    if (meta) meta.setAttribute('content', '#038b45');
     document.querySelectorAll('.theme-toggle').forEach(function (btn) {
-      btn.setAttribute('aria-pressed', next === 'dark' ? 'true' : 'false');
-      btn.setAttribute(
-        'aria-label',
-        next === 'dark' ? 'Switch to light mode' : 'Switch to dark mode'
-      );
-      btn.title = next === 'dark' ? 'Light mode' : 'Dark mode';
+      btn.hidden = true;
+      btn.setAttribute('aria-hidden', 'true');
     });
   }
 
   function setTheme(theme) {
-    applyTheme(theme);
+    applyTheme('light');
     try {
-      localStorage.setItem(THEME_KEY, theme === 'dark' ? 'dark' : 'light');
+      localStorage.setItem(THEME_KEY, 'light');
     } catch (e) {}
   }
 
-  applyTheme(preferredTheme());
+  applyTheme('light');
 
   document.querySelectorAll('.theme-toggle').forEach(function (btn) {
-    btn.addEventListener('click', function () {
-      var current = document.documentElement.getAttribute('data-theme') === 'dark' ? 'dark' : 'light';
-      setTheme(current === 'dark' ? 'light' : 'dark');
-    });
+    btn.hidden = true;
+    btn.setAttribute('aria-hidden', 'true');
   });
 
   function prefersReducedMotion() {
