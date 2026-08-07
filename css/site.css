@@ -1130,6 +1130,117 @@ html[data-theme="dark"] .home-hero .btn.ghost {
   border-color: rgba(255,255,255,.2);
 }
 
+/* Trust / proof strip — after hero, not inside it */
+.home-proof {
+  position: relative;
+  margin-top: -1px;
+  padding: 22px 0 8px;
+  background:
+    linear-gradient(180deg, rgba(216, 240, 226, 0.75) 0%, var(--surface-soft) 55%, transparent 100%);
+  border-top: 1px solid rgba(3, 139, 69, 0.08);
+}
+html[data-theme="dark"] .home-proof {
+  background:
+    linear-gradient(180deg, rgba(20, 36, 27, 0.9) 0%, var(--surface-soft) 60%, transparent 100%);
+  border-top-color: rgba(62, 207, 122, 0.1);
+}
+.home-proof-inner {
+  width: min(1200px, calc(100% - var(--pad-x) * 2));
+  margin: 0 auto;
+}
+.home-proof-list {
+  list-style: none;
+  margin: 0;
+  padding: 0;
+  display: grid;
+  grid-template-columns: repeat(4, minmax(0, 1fr));
+  gap: 0;
+}
+.home-proof-list > li {
+  display: flex;
+  align-items: flex-start;
+  gap: 12px;
+  padding: 14px 18px;
+  min-width: 0;
+  animation: pei-rise .7s cubic-bezier(.22, 1, .36, 1) both;
+}
+.home-proof-list > li:nth-child(1) { animation-delay: .05s; }
+.home-proof-list > li:nth-child(2) { animation-delay: .12s; }
+.home-proof-list > li:nth-child(3) { animation-delay: .18s; }
+.home-proof-list > li:nth-child(4) { animation-delay: .24s; }
+.home-proof-list > li + li {
+  border-inline-start: 1px solid rgba(3, 139, 69, 0.12);
+}
+html[data-theme="dark"] .home-proof-list > li + li {
+  border-inline-start-color: rgba(62, 207, 122, 0.14);
+}
+.home-proof-icon {
+  flex: 0 0 auto;
+  width: 36px;
+  height: 36px;
+  display: grid;
+  place-items: center;
+  color: var(--sea);
+  margin-top: 2px;
+}
+.home-proof-icon svg {
+  width: 24px;
+  height: 24px;
+}
+.home-proof-copy {
+  display: grid;
+  gap: 2px;
+  min-width: 0;
+}
+.home-proof-copy strong {
+  font-family: var(--font-display);
+  font-size: clamp(1.15rem, 2.2vw, 1.45rem);
+  font-weight: 800;
+  letter-spacing: -0.02em;
+  color: var(--ink);
+  line-height: 1.15;
+}
+.home-proof-copy span {
+  font-size: 0.9rem;
+  font-weight: 500;
+  color: var(--ink-soft);
+  line-height: 1.35;
+}
+@media (max-width: 900px) {
+  .home-proof-list {
+    grid-template-columns: repeat(2, minmax(0, 1fr));
+  }
+  .home-proof-list > li:nth-child(2n + 1) {
+    border-inline-start: 0;
+  }
+  .home-proof-list > li:nth-child(n + 3) {
+    border-top: 1px solid rgba(3, 139, 69, 0.12);
+  }
+  html[data-theme="dark"] .home-proof-list > li:nth-child(n + 3) {
+    border-top-color: rgba(62, 207, 122, 0.14);
+  }
+}
+@media (max-width: 520px) {
+  .home-proof {
+    padding-top: 12px;
+  }
+  .home-proof-list {
+    grid-template-columns: 1fr;
+  }
+  .home-proof-list > li {
+    padding: 12px 4px;
+  }
+  .home-proof-list > li + li,
+  .home-proof-list > li:nth-child(n + 3) {
+    border-inline-start: 0;
+    border-top: 1px solid rgba(3, 139, 69, 0.12);
+  }
+  html[data-theme="dark"] .home-proof-list > li + li,
+  html[data-theme="dark"] .home-proof-list > li:nth-child(n + 3) {
+    border-top-color: rgba(62, 207, 122, 0.14);
+  }
+}
+
 .district-tools {
   margin: 18px 0 8px;
   display: grid;
@@ -2238,6 +2349,9 @@ html.is-rtl .hero-kicker,
 html.is-rtl .hero-sub,
 html.is-rtl .home-hero p {
   font-family: "Noto Nastaliq Urdu", "Outfit", system-ui, sans-serif;
+}
+html.is-rtl .home-proof-copy {
+  text-align: right;
 }
 html.is-rtl .nav-drop-menu {
   text-align: right;
