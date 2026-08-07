@@ -85,20 +85,20 @@ button { font: inherit; }
 .brand-link {
   display: inline-flex;
   align-items: center;
-  gap: 10px;
+  gap: 12px;
   font-family: var(--font-display);
   font-weight: 700;
-  font-size: 1.05rem;
+  font-size: 1.12rem;
   color: var(--ink);
   text-decoration: none;
   white-space: nowrap;
 }
 .brand-mark {
-  width: 36px;
-  height: 36px;
+  width: 48px;
+  height: 48px;
   flex: 0 0 auto;
   display: block;
-  border-radius: 10px;
+  border-radius: 12px;
   animation: pei-logo-spin 10s linear infinite;
   transform-origin: center center;
   will-change: transform;
@@ -109,13 +109,13 @@ button { font: inherit; }
 .hero-brand {
   display: inline-flex;
   align-items: center;
-  gap: 14px;
+  gap: 16px;
   margin: 0 0 10px;
 }
 .hero-brand .brand-mark {
-  width: 56px;
-  height: 56px;
-  border-radius: 16px;
+  width: 72px;
+  height: 72px;
+  border-radius: 18px;
   filter: drop-shadow(0 10px 20px rgba(8, 40, 38, 0.35));
   animation-duration: 12s;
 }
@@ -1557,9 +1557,9 @@ html[data-theme="dark"] .site-footer {
   transform: translateY(-1px);
 }
 .footer-logo img {
-  width: 40px;
-  height: 40px;
-  border-radius: 12px;
+  width: 48px;
+  height: 48px;
+  border-radius: 14px;
   background: var(--logo-plate);
   box-shadow: 0 8px 18px rgba(3, 80, 40, 0.12);
 }
