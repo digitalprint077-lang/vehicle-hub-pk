@@ -1130,6 +1130,120 @@ html[data-theme="dark"] .home-hero .btn.ghost {
   border-color: rgba(255,255,255,.2);
 }
 
+/* Independent notice — permanent transparency under hero */
+.independent-notice {
+  position: relative;
+  margin-top: -1px;
+  padding: 18px 0 6px;
+  background:
+    linear-gradient(180deg, rgba(216, 240, 226, 0.55) 0%, var(--surface-soft) 70%, transparent 100%);
+}
+html[data-theme="dark"] .independent-notice {
+  background:
+    linear-gradient(180deg, rgba(20, 36, 27, 0.85) 0%, var(--surface-soft) 70%, transparent 100%);
+}
+.independent-notice-inner {
+  width: min(1200px, calc(100% - var(--pad-x) * 2));
+  margin: 0 auto;
+  padding: 18px 20px;
+  border: 1px solid rgba(3, 139, 69, 0.18);
+  border-left: 4px solid var(--sea);
+  border-radius: 14px;
+  background: color-mix(in srgb, var(--surface) 88%, #e8f6ee);
+  animation: pei-rise .7s cubic-bezier(.22, 1, .36, 1) both;
+}
+html[data-theme="dark"] .independent-notice-inner {
+  background: color-mix(in srgb, var(--surface) 92%, #14241b);
+  border-color: rgba(62, 207, 122, 0.2);
+}
+.independent-notice h2 {
+  margin: 0 0 8px;
+  font-family: var(--font-display);
+  font-size: clamp(1.05rem, 2.2vw, 1.25rem);
+  font-weight: 800;
+  letter-spacing: -0.02em;
+  color: var(--ink);
+}
+.independent-notice p {
+  margin: 0;
+  max-width: 75ch;
+  color: var(--ink-soft);
+  font-size: 0.95rem;
+  line-height: 1.55;
+}
+
+.source-card {
+  margin: 22px 0;
+  padding: 18px 20px;
+  border: 1px solid rgba(3, 139, 69, 0.16);
+  border-radius: 14px;
+  background: color-mix(in srgb, var(--surface) 90%, #e8f6ee);
+}
+html[data-theme="dark"] .source-card {
+  background: color-mix(in srgb, var(--surface) 92%, #14241b);
+  border-color: rgba(62, 207, 122, 0.18);
+}
+.source-card h2,
+.source-card h3 {
+  margin: 0 0 10px;
+  font-size: 1.05rem;
+  font-family: var(--font-display);
+}
+.source-card p {
+  margin: 0 0 8px;
+  color: var(--ink-soft);
+}
+.source-card .source-note {
+  font-size: 0.9rem;
+  color: var(--muted);
+  margin-bottom: 12px;
+}
+.source-card .btn {
+  display: inline-flex;
+  align-items: center;
+  justify-content: center;
+  min-height: 44px;
+  padding: 0 16px;
+  border-radius: 12px;
+  background: var(--sea);
+  color: #fff;
+  text-decoration: none;
+  font-weight: 700;
+  margin-top: 4px;
+}
+.source-card .btn:hover {
+  background: var(--sea-deep);
+  color: #fff;
+}
+.source-card .btn.ghost {
+  background: var(--surface);
+  color: var(--sea-deep);
+  border: 1px solid rgba(3, 139, 69, 0.28);
+}
+
+.footer-disclaimer {
+  margin: 0 0 18px;
+  max-width: 70ch;
+  color: var(--muted);
+  font-size: 0.9rem;
+  line-height: 1.55;
+}
+.footer-legal-links {
+  display: flex;
+  flex-wrap: wrap;
+  gap: 10px 16px;
+  margin-top: 10px;
+}
+.footer-legal-links a {
+  color: var(--ink-soft);
+  text-decoration: none;
+  font-weight: 600;
+  font-size: 0.9rem;
+}
+.footer-legal-links a:hover {
+  color: var(--sea-deep);
+}
+
 /* Trust / proof strip — after hero, not inside it */
 .home-proof {
   position: relative;
