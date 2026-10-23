@@ -14,7 +14,11 @@
     'Sindh': 'Sindh Excise',
     'Khyber Pakhtunkhwa': 'KPK Excise',
     'Islamabad': 'Islamabad Excise',
-    'Balochistan': 'Balochistan Excise'
+    'Balochistan': 'Balochistan Excise',
+    'Gilgit Baltistan': 'Gilgit Excise'
+  };
+  var portalFallback = {
+    'Gilgit Baltistan': 'gilgit-excise.html'
   };
 
   var sectionsEl = document.getElementById('district-sections');
@@ -58,10 +62,11 @@
       html += '<div class="district-province-head">';
       html += '<h2>' + province + '</h2>';
       html += '<span class="district-province-count">' + items.length + ' districts</span>';
-      if (items[0].portal) {
+      var portal = items[0].portal || portalFallback[province];
+      if (portal) {
         html +=
           '<a class="btn ghost district-portal-link" href="' +
-          items[0].portal +
+          portal +
           '">' +
           (portalLabel[province] || 'Open category') +
           '</a>';

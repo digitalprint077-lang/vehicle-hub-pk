@@ -17,7 +17,7 @@
   <meta name="twitter:description" content="Excise and driving licence guides with official portal links across Pakistan.">
   <link rel="preconnect" href="https://fonts.googleapis.com">
   <link rel="preconnect" href="https://fonts.gstatic.com" crossorigin>
-  <link href="https://fonts.googleapis.com/css2?family=Outfit:wght@400;500;600;700;800&display=swap" rel="stylesheet">
+  <link href="https://fonts.googleapis.com/css2?family=Outfit:wght@400;600;700&display=swap" rel="stylesheet">
   <link rel="icon" href="assets/favicon.svg" type="image/svg+xml">
   <link rel="icon" href="assets/favicon-32.png" type="image/png" sizes="32x32">
   <link rel="apple-touch-icon" href="assets/logo-192.png">
@@ -52,12 +52,12 @@
             <a href="guides/islamabad-excise.html">Islamabad Excise</a>
             <a href="guides/balochistan-excise.html">Balochistan Excise</a>
             <a href="guides/gilgit-excise.html">Gilgit Excise</a>
-            <div class="nav-drop-label">Guides (Punjab)</div>
+            <div class="nav-drop-label">Guides</div>
             <a href="guides/vehicle-verification.html">Vehicle verification</a>
             <a href="guides/token-tax.html">Token tax</a>
             <a href="guides/smart-card.html">Smart card</a>
             <a href="guides/e-challan.html">E-Challan</a>
-            <a href="guides/districts.html">District Excise offices</a>
+            <a href="guides/districts.html">District directory</a>
           </div>
         </div>
         <div class="nav-dropdown" data-menu="licence">
@@ -109,12 +109,12 @@
           <a href="guides/islamabad-excise.html">Islamabad Excise</a>
           <a href="guides/balochistan-excise.html">Balochistan Excise</a>
           <a href="guides/gilgit-excise.html">Gilgit Excise</a>
-          <div class="nav-drop-label">Guides (Punjab)</div>
+          <div class="nav-drop-label">Guides</div>
           <a href="guides/vehicle-verification.html">Vehicle verification</a>
           <a href="guides/token-tax.html">Token tax</a>
           <a href="guides/smart-card.html">Smart card</a>
           <a href="guides/e-challan.html">E-Challan</a>
-          <a href="guides/districts.html">District Excise offices</a>
+          <a href="guides/districts.html">District directory</a>
         </div>
       </div>
       <div class="nav-dropdown" data-menu="licence">
@@ -157,6 +157,31 @@
       <p>Browse official Excise portals by province — Punjab, Sindh, KPK, Islamabad, Balochistan, and Gilgit — with clear guides for verification, taxes, smart cards, and more.</p>
       <a class="btn" href="guides/provinces.html">Browse services</a>
       <a class="btn ghost" href="how-it-works.html">How it works</a>
+      <form class="task-picker" id="task-picker" action="guides/provinces.html">
+        <p class="task-picker-title">Find the official page</p>
+        <label>Where is it registered?
+          <select name="region" required>
+            <option value="">Choose a region</option>
+            <option value="punjab">Punjab</option>
+            <option value="sindh">Sindh</option>
+            <option value="kpk">Khyber Pakhtunkhwa</option>
+            <option value="islamabad">Islamabad</option>
+            <option value="balochistan">Balochistan</option>
+            <option value="gilgit">Gilgit-Baltistan</option>
+          </select>
+        </label>
+        <label>What do you need?
+          <select name="task" required>
+            <option value="">Choose a task</option>
+            <option value="verify">Verify a vehicle</option>
+            <option value="tax">Token tax or pay dues</option>
+            <option value="licence">Verify a driving licence</option>
+            <option value="challan">Check a challan</option>
+            <option value="card">Smart card status</option>
+          </select>
+        </label>
+        <button class="btn" type="submit">Open guide</button>
+      </form>
     </div>
   </section>
 
@@ -178,10 +203,10 @@
               <span class="province-badge">KPK</span>
             </div>
             <h3>KPK / Dastak</h3>
-            <p>Main Dastak portal for digital arms licensing — plus links to KPK driving licence verify / track.</p>
+            <p>Driving licence verify and track on the KPK citizen portal. The Dastak home is arms licensing, not a vehicle-ownership search.</p>
             <div class="province-actions">
               <a class="btn" href="guides/kpk-excise.html">Open category</a>
-              <a class="btn ghost card-open" href="https://dastak.kp.gov.pk/" target="_blank" rel="noopener noreferrer">Visit</a>
+              <a class="btn ghost card-open" href="https://dastakappecitizenkp.pk/" target="_blank" rel="noopener noreferrer">Licence portal</a>
             </div>
           </div>
           <div class="province-card">
@@ -252,9 +277,9 @@
         <h2>Popular guides</h2>
         <ul>
           <li><a href="guides/driving-licence.html"><strong>Driving licence by province</strong></a> — official portals for Punjab, Sindh, Islamabad, KPK, Balochistan, and Gilgit-Baltistan.</li>
-          <li><a href="guides/vehicle-verification.html"><strong>Vehicle verification (Punjab)</strong></a> — official MTMIS steps, SMS tip, and what result fields mean.</li>
-          <li><a href="guides/token-tax.html"><strong>Token tax (Punjab)</strong></a> — why dues matter before purchase and how status is usually checked.</li>
-          <li><a href="guides/e-challan.html"><strong>E-Challan (Punjab)</strong></a> — unpaid fines that can block transfers.</li>
+          <li><a href="guides/vehicle-verification.html"><strong>Vehicle verification</strong></a> — Punjab MTMIS steps, plus Sindh, Islamabad, Balochistan, and Gilgit.</li>
+          <li><a href="guides/token-tax.html"><strong>Token tax</strong></a> — Punjab checks, and the official pay links listed for other regions.</li>
+          <li><a href="guides/e-challan.html"><strong>E-Challan</strong></a> — unpaid fines that can block a Punjab transfer, plus regional notes.</li>
           <li><a href="guides/districts.html"><strong>Punjab district Excise offices</strong></a> — find local office contacts when online tools are not enough.</li>
         </ul>
 

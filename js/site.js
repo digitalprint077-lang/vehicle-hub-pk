@@ -56,7 +56,7 @@
         if (existing && existing.parentNode) existing.parentNode.removeChild(existing);
       }, reduce ? 0 : 800);
     }
-    var wait = reduce ? 0 : 650;
+    var wait = reduce ? 0 : 160;
     if (document.readyState === 'complete') {
       setTimeout(hide, wait);
     } else {
@@ -221,7 +221,14 @@
     });
 
     document.addEventListener('keydown', function (e) {
-      if (e.key === 'Escape') closeAll();
+      if (e.key !== 'Escape') return;
+      closeAll();
+      var mobileNav = document.getElementById('mobile-nav');
+      var navToggle = document.getElementById('nav-toggle');
+      if (mobileNav && mobileNav.classList.contains('open')) {
+        mobileNav.classList.remove('open');
+        if (navToggle) navToggle.setAttribute('aria-expanded', 'false');
+      }
     });
   }
 
@@ -300,7 +307,7 @@
 
       window.setTimeout(function () {
         window.location.href = href;
-      }, 220);
+      }, 80);
     });
   }
 
@@ -322,10 +329,100 @@
     });
   }
 
+  var TASK_ROUTES = {
+    punjab: {
+      verify: 'guides/vehicle-verification.html#punjab',
+      tax: 'guides/token-tax.html#punjab',
+      licence: 'guides/driving-licence.html#punjab',
+      challan: 'guides/e-challan.html#punjab',
+      card: 'guides/smart-card.html#punjab'
+    },
+    sindh: {
+      verify: 'guides/vehicle-verification.html#sindh',
+      tax: 'guides/token-tax.html#sindh',
+      licence: 'guides/driving-licence.html#sindh',
+      challan: 'guides/e-challan.html#sindh',
+      card: 'guides/smart-card.html#sindh'
+    },
+    kpk: {
+      verify: 'guides/vehicle-verification.html#kpk',
+      tax: 'guides/token-tax.html#kpk',
+      licence: 'guides/driving-licence.html#kpk',
+      challan: 'guides/e-challan.html#kpk',
+      card: 'guides/smart-card.html#kpk'
+    },
+    islamabad: {
+      verify: 'guides/vehicle-verification.html#islamabad',
+      tax: 'guides/token-tax.html#islamabad',
+      licence: 'guides/driving-licence.html#islamabad',
+      challan: 'guides/e-challan.html#islamabad',
+      card: 'guides/smart-card.html#islamabad'
+    },
+    balochistan: {
+      verify: 'guides/vehicle-verification.html#balochistan',
+      tax: 'guides/token-tax.html#balochistan',
+      licence: 'guides/driving-licence.html#balochistan',
+      challan: 'guides/e-challan.html#balochistan',
+      card: 'guides/smart-card.html#balochistan'
+    },
+    gilgit: {
+      verify: 'guides/vehicle-verification.html#gilgit',
+      tax: 'guides/token-tax.html#gilgit',
+      licence: 'guides/driving-licence.html#gilgit',
+      challan: 'guides/e-challan.html#gilgit',
+      card: 'guides/smart-card.html#gilgit'
+    }
+  };
+
+  function bindTaskPicker() {
+    var form = document.getElementById('task-picker');
+    if (!form) return;
+    form.addEventListener('submit', function (e) {
+      var region = form.region && form.region.value;
+      var task = form.task && form.task.value;
+      var href = TASK_ROUTES[region] && TASK_ROUTES[region][task];
+      if (!href) return;
+      e.preventDefault();
+      window.location.href = href;
+    });
+  }
+
+  function bootA11y() {
+    if (!document.body) return;
+    if (!document.querySelector('.skip-link')) {
+      var skip = document.createElement('a');
+      skip.className = 'skip-link';
+      skip.href = '#main';
+      skip.textContent = 'Skip to content';
+      document.body.insertBefore(skip, document.body.firstChild);
+    }
+    var main = document.getElementById('main');
+    if (!main) {
+      main = document.querySelector('.home-hero, .page-wrap');
+      if (main) main.id = 'main';
+    }
+    if (main && !main.hasAttribute('tabindex')) main.setAttribute('tabindex', '-1');
+  }
+
+  function markExternalLinks() {
+    document.querySelectorAll('a[target="_blank"]').forEach(function (a) {
+      if (a.dataset.externalMarked) return;
+      a.dataset.externalMarked = '1';
+      if (!a.getAttribute('title')) a.setAttribute('title', 'Opens in a new tab');
+      var rel = (a.getAttribute('rel') || '').toLowerCase();
+      if (rel.indexOf('noopener') === -1) {
+        a.setAttribute('rel', (rel + ' noopener noreferrer').trim());
+      }
+    });
+  }
+
+  bootA11y();
+  markExternalLinks();
   markActiveNav();
   bindNavDropdowns();
   bindPressFeedback();
   bindPageTransitions();
+  bindTaskPicker();
 
   function revealSelector() {
     return [
