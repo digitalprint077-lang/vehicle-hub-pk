@@ -6,9 +6,18 @@
   <meta name="theme-color" content="#038b45">
   <title>Contact Us | Vehicle Hub PK</title>
   <meta name="description" content="Contact Vehicle Hub PK about guides or corrections.">
+  <link rel="canonical" href="https://vehicle-hub-pk.pages.dev/contact.html">
+  <meta property="og:type" content="website">
+  <meta property="og:title" content="Contact Us | Vehicle Hub PK">
+  <meta property="og:description" content="Contact Vehicle Hub PK about guides or corrections.">
+  <meta property="og:url" content="https://vehicle-hub-pk.pages.dev/contact.html">
+  <meta property="og:image" content="https://vehicle-hub-pk.pages.dev/assets/logo-192.png">
+  <meta name="twitter:card" content="summary">
+  <meta name="twitter:title" content="Contact Us | Vehicle Hub PK">
+  <meta name="twitter:description" content="Contact Vehicle Hub PK about guides or corrections.">
   <link rel="preconnect" href="https://fonts.googleapis.com">
   <link rel="preconnect" href="https://fonts.gstatic.com" crossorigin>
-  <link href="https://fonts.googleapis.com/css2?family=Outfit:wght@400;500;600;700;800&display=swap" rel="stylesheet">
+  <link href="https://fonts.googleapis.com/css2?family=Outfit:wght@400;600;700&display=swap" rel="stylesheet">
   <link rel="icon" href="assets/favicon.svg" type="image/svg+xml">
   <link rel="icon" href="assets/favicon-32.png" type="image/png" sizes="32x32">
   <link rel="apple-touch-icon" href="assets/logo-192.png">
@@ -23,6 +32,9 @@
     })();
   </script>
   <link rel="stylesheet" href="css/site.css">
+<script type="application/ld+json">
+{"@context":"https://schema.org","@type":"BreadcrumbList","itemListElement":[{"@type":"ListItem","position":1,"name":"Home","item":"https://vehicle-hub-pk.pages.dev/"},{"@type":"ListItem","position":2,"name":"Contact Us","item":"https://vehicle-hub-pk.pages.dev/contact.html"}]}
+</script>
 </head>
 <body>
   <header class="site-header">
@@ -43,12 +55,12 @@
             <a href="guides/islamabad-excise.html">Islamabad Excise</a>
             <a href="guides/balochistan-excise.html">Balochistan Excise</a>
             <a href="guides/gilgit-excise.html">Gilgit Excise</a>
-            <div class="nav-drop-label">Guides (Punjab)</div>
+            <div class="nav-drop-label">Guides</div>
             <a href="guides/vehicle-verification.html">Vehicle verification</a>
             <a href="guides/token-tax.html">Token tax</a>
             <a href="guides/smart-card.html">Smart card</a>
             <a href="guides/e-challan.html">E-Challan</a>
-            <a href="guides/districts.html">District Excise offices</a>
+            <a href="guides/districts.html">District directory</a>
           </div>
         </div>
         <div class="nav-dropdown" data-menu="licence">
@@ -100,12 +112,12 @@
           <a href="guides/islamabad-excise.html">Islamabad Excise</a>
           <a href="guides/balochistan-excise.html">Balochistan Excise</a>
           <a href="guides/gilgit-excise.html">Gilgit Excise</a>
-          <div class="nav-drop-label">Guides (Punjab)</div>
+          <div class="nav-drop-label">Guides</div>
           <a href="guides/vehicle-verification.html">Vehicle verification</a>
           <a href="guides/token-tax.html">Token tax</a>
           <a href="guides/smart-card.html">Smart card</a>
           <a href="guides/e-challan.html">E-Challan</a>
-          <a href="guides/districts.html">District Excise offices</a>
+          <a href="guides/districts.html">District directory</a>
         </div>
       </div>
       <div class="nav-dropdown" data-menu="licence">
@@ -145,8 +157,28 @@
       <p class="lead">Tell us if a guide looks outdated or a page is broken.</p>
       <div class="ad-slot ad-inarticle" data-ad="inarticle">Advertisement</div>
       <h2>How to reach us</h2>
-      <p>Found a broken link, outdated fee, or missing province tip? We update guides from reader reports.</p>
-      <p>When you contact the site publisher, include the page URL, what looked wrong, and the official source if you have one (corrections, new portals, typos).</p>
+      <p>Found a broken link, outdated fee, or missing province tip? Send a correction. Include the page URL, what looked wrong, and the official source if you have one.</p>
+      <p id="contact-how">Fill in the correction below. This website does not store the form.</p>
+      <form class="contact-form" id="contact-form" action="contact.html" method="post">
+        <label>Your name
+          <input name="name" type="text" autocomplete="name" maxlength="120">
+        </label>
+        <label>Your email
+          <input name="email" type="email" autocomplete="email" required maxlength="160">
+        </label>
+        <label>Page URL
+          <input name="page" type="text" inputmode="url" required placeholder="https://vehicle-hub-pk.pages.dev/guides/..." maxlength="400">
+        </label>
+        <label>What looked wrong
+          <textarea name="message" required maxlength="4000"></textarea>
+        </label>
+        <label>Official source, if you have one
+          <input name="source" type="text" inputmode="url" placeholder="https://" maxlength="400">
+        </label>
+        <button class="btn" type="submit">Send correction</button>
+        <p class="form-note" id="contact-status" role="status"></p>
+        <pre class="contact-preview" id="contact-preview" hidden></pre>
+      </form>
       <div class="cta-box">
         <strong>Looking for a guide?</strong>
         <p>Browse Excise portals by province or driving licence verification tools.</p>
@@ -201,6 +233,8 @@
   </footer>
   <script src="js/ads-config.js"></script>
   <script src="js/ads-render.js"></script>
+  <script src="js/contact-config.js"></script>
+  <script src="js/contact.js"></script>
   <script src="js/site.js"></script>
 </body>
 </html>

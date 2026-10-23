@@ -474,6 +474,7 @@ html[data-theme="dark"] .theme-toggle .icon-moon { display: none; }
   padding: 8px 12px 2px;
 }
 
+.ad-slot:not(.ad-live) { display: none; }
 .ad-slot {
   display: flex;
   align-items: center;
@@ -532,6 +533,9 @@ html[data-theme="dark"] .theme-toggle .icon-moon { display: none; }
   letter-spacing: 0.04em;
   text-transform: uppercase;
 }
+.article h1,
+.article h2,
+.article h3 { scroll-margin-top: 84px; }
 .article h1 {
   margin: 0 0 12px;
   font-family: var(--font-display);
@@ -1068,6 +1072,8 @@ html[data-theme="dark"] .home-hero-bg {
   min-height: 48px;
   padding: 0 20px;
   border-radius: 14px;
+  border: 0;
+  cursor: pointer;
   background: var(--sea);
   color: #fff;
   text-decoration: none;
@@ -1703,13 +1709,13 @@ html[data-theme="dark"] .pei-knock-text { color: #3ecf7a; }
 }
 
 /* Page enter / leave when switching tabs & pages */
-body.page-ready > :not(#pei-preloader):not(.site-header) {
+body.page-ready > :not(#pei-preloader):not(.site-header):not(.skip-link) {
   animation: pei-page-in .42s cubic-bezier(.22, 1, .36, 1) both;
 }
 body.page-leaving {
   pointer-events: none;
 }
-body.page-leaving > :not(#pei-preloader):not(.site-header) {
+body.page-leaving > :not(#pei-preloader):not(.site-header):not(.skip-link) {
   opacity: 0;
   transform: translateY(-8px);
   transition: opacity .22s ease, transform .22s ease;
@@ -1793,8 +1799,8 @@ a.btn.is-pressing {
   .home-hero-bg {
     transform: none;
   }
-  body.page-ready > :not(#pei-preloader):not(.site-header),
-  body.page-leaving > :not(#pei-preloader):not(.site-header) {
+  body.page-ready > :not(#pei-preloader):not(.site-header):not(.skip-link),
+  body.page-leaving > :not(#pei-preloader):not(.site-header):not(.skip-link) {
     animation: none !important;
     opacity: 1 !important;
     transform: none !important;
@@ -1811,4 +1817,110 @@ a.btn.is-pressing {
   a.btn:hover {
     transform: none;
   }
+}
+
+.skip-link {
+  position: absolute;
+  left: 12px;
+  top: 8px;
+  z-index: 80;
+  transform: translateY(-140%);
+  background: var(--sea);
+  color: #fff;
+  text-decoration: none;
+  font-weight: 700;
+  padding: 10px 14px;
+  border-radius: 12px;
+}
+.skip-link:focus {
+  transform: none;
+}
+
+.task-picker {
+  margin-top: 18px;
+  padding: 16px;
+  max-width: 520px;
+  display: grid;
+  gap: 12px;
+  background: var(--paper);
+  border: 1px solid var(--line);
+  border-radius: 16px;
+  box-shadow: var(--shadow);
+}
+.task-picker-title {
+  margin: 0;
+  font-weight: 800;
+  color: var(--ink);
+  font-size: 1.05rem;
+}
+.home-hero .task-picker p,
+.home-hero .task-picker-title {
+  margin: 0;
+  max-width: none;
+  animation: none;
+  color: var(--ink);
+}
+.task-picker label,
+.contact-form label {
+  display: grid;
+  gap: 6px;
+  font-weight: 650;
+  font-size: 0.92rem;
+  color: var(--ink);
+}
+.task-picker select,
+.contact-form input,
+.contact-form textarea {
+  width: 100%;
+  font: inherit;
+  color: var(--ink);
+  background: var(--surface-soft);
+  border: 1px solid var(--line);
+  border-radius: 12px;
+  padding: 12px 14px;
+  min-height: 48px;
+}
+.contact-form textarea { min-height: 140px; resize: vertical; }
+.task-picker select:focus,
+.contact-form input:focus,
+.contact-form textarea:focus {
+  outline: 2px solid var(--sea);
+  outline-offset: 2px;
+}
+.contact-form {
+  display: grid;
+  gap: 14px;
+  margin: 8px 0 20px;
+}
+.contact-form .btn {
+  display: inline-flex;
+  align-items: center;
+  justify-content: center;
+  width: fit-content;
+  min-height: 44px;
+  padding: 0 16px;
+  border: 0;
+  border-radius: 12px;
+  background: var(--sea);
+  color: #fff;
+  font-weight: 700;
+  cursor: pointer;
+}
+.contact-form .btn:hover { background: var(--sea-deep); }
+.contact-preview {
+  margin: 0;
+  padding: 14px;
+  white-space: pre-wrap;
+  background: var(--surface-soft);
+  border: 1px solid var(--line);
+  border-radius: 12px;
+  color: var(--ink);
+}
+.form-note { margin: 0; color: var(--muted); }
+
+.article a[target="_blank"]:not(.btn)::after,
+.side-panel a[target="_blank"]::after {
+  content: " \2197";
+  font-size: 0.85em;
+  white-space: nowrap;
 }
