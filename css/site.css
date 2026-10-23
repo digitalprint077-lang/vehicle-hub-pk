@@ -1709,13 +1709,13 @@ html[data-theme="dark"] .pei-knock-text { color: #3ecf7a; }
 }
 
 /* Page enter / leave when switching tabs & pages */
-body.page-ready > :not(#pei-preloader):not(.site-header) {
+body.page-ready > :not(#pei-preloader):not(.site-header):not(.skip-link) {
   animation: pei-page-in .42s cubic-bezier(.22, 1, .36, 1) both;
 }
 body.page-leaving {
   pointer-events: none;
 }
-body.page-leaving > :not(#pei-preloader):not(.site-header) {
+body.page-leaving > :not(#pei-preloader):not(.site-header):not(.skip-link) {
   opacity: 0;
   transform: translateY(-8px);
   transition: opacity .22s ease, transform .22s ease;
@@ -1799,8 +1799,8 @@ a.btn.is-pressing {
   .home-hero-bg {
     transform: none;
   }
-  body.page-ready > :not(#pei-preloader):not(.site-header),
-  body.page-leaving > :not(#pei-preloader):not(.site-header) {
+  body.page-ready > :not(#pei-preloader):not(.site-header):not(.skip-link),
+  body.page-leaving > :not(#pei-preloader):not(.site-header):not(.skip-link) {
     animation: none !important;
     opacity: 1 !important;
     transform: none !important;
